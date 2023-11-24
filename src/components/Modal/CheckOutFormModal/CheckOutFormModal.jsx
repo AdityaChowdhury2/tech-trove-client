@@ -6,9 +6,10 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
 import useAuth from '../../../hooks/useAuth';
 import { useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import toast from 'react-hot-toast';
+import useGetSubscription from '../../../hooks/useSubscription';
 
 const style = {
 	position: 'absolute',
@@ -27,6 +28,8 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 	const elements = useElements();
 	const [cardError, setCardError] = useState();
 	const { user } = useAuth();
+	const { refetch } = useGetSubscription();
+
 	// TODO: Use Axios Secure instead of axios public
 	const axiosPublic = useAxiosPublic();
 
@@ -34,6 +37,9 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 		mutationFn: async data => {
 			const res = await axiosPublic.put(`/api/v1/users/${user?.email}`, data);
 			return res.data;
+		},
+		onSuccess: () => {
+			refetch();
 		},
 	});
 
@@ -79,6 +85,7 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 		if (confirmError) {
 			console.log(confirmError);
 			setCardError(confirmError.message);
+			toast.error(confirmError.message, { id: toastId });
 		}
 
 		console.log('payment intent', paymentIntent);
@@ -90,12 +97,15 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 			};
 			try {
 				// TODO: save payment info to the database
+				const response = axiosPublic.post('/api/v1/payment', paymentInfo);
+				console.log(response.data);
 				// TODO: update user info subscribed true
 				updateUserInfo({ subscribed: true });
 
 				// TODO: toast
 				toast.success('Payment Successful', { id: toastId });
 				handleClose();
+
 				// TODO: navigate to my profile
 			} catch (err) {
 				console.log(err.message);
@@ -150,6 +160,7 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 						</Button>
 					</Box>
 				</form>
+				{cardError && <p>{cardError}</p>}
 			</Box>
 		</Modal>
 	);

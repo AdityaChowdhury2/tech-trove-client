@@ -11,6 +11,7 @@ import MyProducts from '../pages/Dashboard/User/MyProducts';
 import Stats from '../pages/Dashboard/Admin/Stats';
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers';
 import ManageCoupons from '../pages/Dashboard/Admin/ManageCoupons';
+import PrivateRoute from './PrivateRoute';
 
 const Routes = createBrowserRouter([
 	{
@@ -27,7 +28,11 @@ const Routes = createBrowserRouter([
 	},
 	{
 		path: '/dashboard',
-		element: <Dashboard />,
+		element: (
+			<PrivateRoute>
+				<Dashboard />
+			</PrivateRoute>
+		),
 		children: [
 			// user routes
 			{

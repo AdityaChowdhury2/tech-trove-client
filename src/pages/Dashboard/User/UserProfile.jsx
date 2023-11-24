@@ -8,6 +8,8 @@ import { useState } from 'react';
 import CheckOutFormModal from '../../../components/Modal/CheckOutFormModal/CheckOutFormModal';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import useGetSubscription from '../../../hooks/useSubscription';
 
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_Pk);
 
@@ -17,6 +19,8 @@ const UserProfile = () => {
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 	const handleSubmit = () => {};
+	const { isSubscribed } = useGetSubscription();
+	console.log(isSubscribed);
 	return (
 		<Container>
 			<Box height={30} />
@@ -41,9 +45,16 @@ const UserProfile = () => {
 						gutterBottom
 						variant="h6"
 						component="div"
-						sx={{ textAlign: 'center' }}
+						sx={{
+							textAlign: 'center',
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							gap: '10px',
+						}}
 					>
 						{user?.displayName}
+						{isSubscribed && <VerifiedIcon sx={{ fontSize: '15px' }} />}
 					</Typography>
 					<Typography
 						variant="body2"
@@ -54,9 +65,13 @@ const UserProfile = () => {
 					</Typography>
 				</CardContent>
 				<CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-					<Button size="small" onClick={handleOpen}>
-						Subscribe
-					</Button>
+					{!isSubscribed && (
+						<div>
+							<Button size="small" onClick={handleOpen}>
+								Subscribe
+							</Button>
+						</div>
+					)}
 					<Elements stripe={stripePromise}>
 						<CheckOutFormModal
 							open={open}
