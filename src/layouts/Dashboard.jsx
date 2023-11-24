@@ -17,6 +17,8 @@ import GuestMenu from '../components/Dashboard/Menu/GuestMenu';
 import AdminMenu from '../components/Dashboard/Menu/AdminMenu';
 import ModeratorMenu from '../components/Dashboard/Menu/ModeratorMenu';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import useUserRole from '../hooks/useUserRole';
+import useAuth from '../hooks/useAuth';
 
 const drawerWidth = 240;
 
@@ -69,6 +71,7 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MiniDrawer() {
 	const open = useAppStore(state => state.dopen);
+	const { role, isLoading } = useUserRole();
 
 	return (
 		<div>
@@ -78,14 +81,16 @@ export default function MiniDrawer() {
 				<Drawer variant="permanent" open={open}>
 					<DrawerHeader></DrawerHeader>
 					<Divider />
-					<List>
-						{/* Guest Menu */}
-						<GuestMenu />
-						{/* Moderator Menu */}
-						{/* <ModeratorMenu /> */}
-						{/* Admin Menu */}
-						{/* <AdminMenu /> */}
-					</List>
+					{!isLoading && (
+						<List>
+							{/* Guest Menu */}
+							{role && role === 'guest' && <GuestMenu />}
+							{/* Moderator Menu */}
+							{role && role === 'moderator' && <ModeratorMenu />}
+							{/* Admin Menu */}
+							{role && role === 'admin' && <AdminMenu />}
+						</List>
+					)}
 					<Divider />
 					<List>
 						<ListItem disablePadding sx={{ display: 'block' }}>
