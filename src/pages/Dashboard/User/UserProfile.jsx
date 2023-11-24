@@ -23,7 +23,7 @@ const UserProfile = () => {
 	console.log(isSubscribed);
 	return (
 		<Container>
-			<Box height={30} />
+			<Box height={40} />
 			<Card
 				sx={{
 					maxWidth: { md: '75%', xs: '100%' },

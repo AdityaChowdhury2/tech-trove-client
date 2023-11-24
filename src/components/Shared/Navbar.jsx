@@ -5,17 +5,16 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
-const auth = ['Login', 'Register'];
 const Navbar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
@@ -38,10 +37,14 @@ const Navbar = () => {
 	};
 
 	return (
-		<Container>
-			<AppBar color="transparent" position="static" elevation={0}>
-				<Container maxWidth="xl">
-					<Toolbar disableGutters>
+		<Container sx={{ paddingX: { xs: 1 } }}>
+			<AppBar
+				position="static"
+				sx={{ backgroundColor: 'transparent' }}
+				elevation={0}
+			>
+				<Container maxWidth="xl" sx={{ paddingX: { xs: 1 } }}>
+					<Toolbar disableGutters sx={{ alignItems: 'center' }}>
 						<Typography
 							variant="h6"
 							noWrap
@@ -66,15 +69,41 @@ const Navbar = () => {
 								aria-controls="menu-appbar"
 								aria-haspopup="true"
 								onClick={handleOpenNavMenu}
-								color="inherit"
+								color="primary.50"
 							>
 								<MenuIcon />
 							</IconButton>
-
-							{user ? (
+							<Menu
+								id="menu-appbar"
+								elevation={2}
+								anchorEl={anchorElNav}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'left',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'left',
+								}}
+								open={Boolean(anchorElNav)}
+								onClose={handleCloseNavMenu}
+								sx={{
+									display: { xs: 'block', md: 'none' },
+								}}
+							>
+								<MenuItem onClick={handleCloseNavMenu}>
+									<Link to={'/products'} style={{ textDecoration: 'none' }}>
+										<Typography textAlign="center" color={'primary.main'}>
+											Products
+										</Typography>
+									</Link>
+								</MenuItem>
+							</Menu>
+							{!user && (
 								<Menu
-									elevation={2}
 									id="menu-appbar"
+									elevation={2}
 									anchorEl={anchorElNav}
 									anchorOrigin={{
 										vertical: 'bottom',
@@ -92,167 +121,114 @@ const Navbar = () => {
 									}}
 								>
 									<MenuItem onClick={handleCloseNavMenu}>
-										<NavLink
-											to={`/products`}
-											style={{ textDecoration: 'none' }}
+										<Link
+											to={'/products'}
+											style={{ textDecoration: 'none', color: 'primary.main' }}
 										>
-											<Typography
-												textAlign="center"
-												sx={{
-													color: 'primary.main',
-												}}
-											>
+											<Typography textAlign="center" color={'primary.main'}>
 												Products
 											</Typography>
-										</NavLink>
+										</Link>
 									</MenuItem>
-								</Menu>
-							) : (
-								<Menu
-									elevation={2}
-									id="menu-appbar"
-									anchorEl={anchorElNav}
-									anchorOrigin={{
-										vertical: 'bottom',
-										horizontal: 'left',
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'left',
-									}}
-									open={Boolean(anchorElNav)}
-									onClose={handleCloseNavMenu}
-									sx={{
-										display: { xs: 'block', md: 'none' },
-									}}
-								>
 									<MenuItem onClick={handleCloseNavMenu}>
-										<NavLink
-											to={`/products`}
-											style={{ textDecoration: 'none' }}
-										>
-											<Typography
-												textAlign="center"
-												sx={{
-													color: 'primary.main',
-												}}
-											>
-												Products
+										<Link to={'/login'} style={{ textDecoration: 'none' }}>
+											<Typography textAlign="center" color={'primary.main'}>
+												Login
 											</Typography>
-										</NavLink>
+										</Link>
 									</MenuItem>
-									{auth.map(auth => (
-										<MenuItem key={auth} onClick={handleCloseNavMenu}>
-											<NavLink
-												to={`${auth}`}
-												style={{ textDecoration: 'none' }}
-											>
-												<Typography
-													textAlign="center"
-													sx={{
-														color: 'primary.main',
-													}}
-												>
-													{auth}
-												</Typography>
-											</NavLink>
-										</MenuItem>
-									))}
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Link
+											to={'/register'}
+											style={{ textDecoration: 'none', color: 'primary.main' }}
+										>
+											<Typography textAlign="center" color={'primary.main'}>
+												Register
+											</Typography>
+										</Link>
+									</MenuItem>
 								</Menu>
 							)}
 						</Box>
-						<Grid
+
+						<Typography
+							variant="h5"
+							noWrap
+							component="p"
 							sx={{
 								mr: 2,
-								flexGrow: 1,
 								display: { xs: 'flex', md: 'none' },
+								flexGrow: 1,
+								fontFamily: 'monospace',
+								fontWeight: 700,
+								color: 'primary.main',
+								letterSpacing: '.3rem',
+
+								textDecoration: 'none',
 							}}
 						>
-							<Typography
-								variant="h5"
-								noWrap
-								component="a"
-								sx={{
-									fontFamily: 'monospace',
-									fontWeight: 700,
-									letterSpacing: '.1rem',
-									color: 'primary.main',
-									textDecoration: 'none',
-								}}
-							>
-								TechTrove
-							</Typography>
-						</Grid>
+							TechTrove
+						</Typography>
 						<Box
 							sx={{
 								flexGrow: 1,
 								display: {
 									xs: 'none',
 									md: 'flex',
-									justifyContent: `${user ? 'center' : 'flex-end'}`,
+									justifyContent: 'center',
+									...(!user && {
+										justifyContent: 'end',
+									}),
+									marginRight: 10,
 								},
 							}}
 						>
-							<NavLink to={`/products`} style={{ textDecoration: 'none' }}>
+							<Link to={'/products'} style={{ textDecoration: 'none' }}>
 								<Button
 									onClick={handleCloseNavMenu}
 									sx={{
 										my: 2,
 										color: 'primary.main',
-										'&:hover': {
-											color: 'primary.800',
-										},
-										fontWeight: 700,
 										display: 'block',
+										fontWeight: 600,
 									}}
 								>
 									Products
 								</Button>
-							</NavLink>
-							{user ? (
-								<></>
-							) : (
+							</Link>
+							{!user && (
 								<>
-									<NavLink to={`/login`} style={{ textDecoration: 'none' }}>
+									<Link to={'/login'} style={{ textDecoration: 'none' }}>
 										<Button
-											onClick={handleCloseNavMenu}
 											sx={{
 												my: 2,
 												color: 'primary.main',
-												'&:hover': {
-													color: 'primary.800',
-												},
-												fontWeight: 700,
 												display: 'block',
+												fontWeight: 600,
 											}}
 										>
-											Sign In
+											Login
 										</Button>
-									</NavLink>
-									<NavLink to={`/register`} style={{ textDecoration: 'none' }}>
+									</Link>
+									<Link to={'/register'} style={{ textDecoration: 'none' }}>
 										<Button
-											onClick={handleCloseNavMenu}
 											sx={{
 												my: 2,
 												color: 'primary.main',
-												'&:hover': {
-													color: 'primary.800',
-												},
-												fontWeight: 700,
 												display: 'block',
+												fontWeight: 600,
 											}}
 										>
-											Sign Up
+											Register
 										</Button>
-									</NavLink>
+									</Link>
 								</>
 							)}
 						</Box>
 
 						{user && (
 							<Box sx={{ flexGrow: 0 }}>
-								<Tooltip title="Open user menu">
+								<Tooltip title="Open settings">
 									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 										<Avatar alt={user?.displayName} src={user?.photoURL} />
 									</IconButton>
@@ -274,23 +250,28 @@ const Navbar = () => {
 									open={Boolean(anchorElUser)}
 									onClose={handleCloseUserMenu}
 								>
-									<MenuItem sx={{ cursor: 'default' }}>
-										<Typography variant="body1" textAlign={'center'}>
-											{user.displayName}
+									<MenuItem>
+										<Typography textAlign="center" color={'primary.800'}>
+											{user?.displayName}
 										</Typography>
 									</MenuItem>
-
-									<NavLink
-										to={'/dashboard'}
-										style={{ textDecoration: 'none', color: 'inherit' }}
-									>
-										<MenuItem>
-											<Typography textAlign="center">Dashboard</Typography>
-										</MenuItem>
-									</NavLink>
-
+									<Divider />
+									<MenuItem>
+										<Link to={'/dashboard'} style={{ textDecoration: 'none' }}>
+											<Typography
+												component={'p'}
+												variant="p"
+												textAlign="center"
+												color={'primary.main'}
+											>
+												Dashboard
+											</Typography>
+										</Link>
+									</MenuItem>
 									<MenuItem onClick={() => logout()}>
-										<Typography textAlign="center">Logout</Typography>
+										<Typography textAlign="center" color={'primary.main'}>
+											Logout
+										</Typography>
 									</MenuItem>
 								</Menu>
 							</Box>

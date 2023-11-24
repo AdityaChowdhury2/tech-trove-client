@@ -151,7 +151,15 @@ export default function MiniDrawer() {
 						</ListItem>
 					</List>
 				</Drawer>
-				<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+				<Box
+					component="main"
+					sx={{
+						flexGrow: 1,
+						p: 3,
+						overflow: 'scroll',
+						paddingX: { xs: 1, md: 5 },
+					}}
+				>
 					<Outlet />
 				</Box>
 			</Box>

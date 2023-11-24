@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 const DashboardHome = () => {
 	return (
 		<div>
-			<Box height={30} />
+			<Box height={40} />
 			<p> Hello I Am DashboardHome </p>
 		</div>
 	);
