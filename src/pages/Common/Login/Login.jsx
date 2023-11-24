@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Container } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -9,22 +9,37 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import SocialLogin from '../../../components/Shared/SocialLogin';
+import useAuth from '../../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const Login = () => {
-	const handleSubmit = event => {
+	const { login } = useAuth();
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	const handleSubmit = async event => {
 		event.preventDefault();
+		const toastId = toast.loading('Signing in...');
 		const data = new FormData(event.currentTarget);
-		console.log({
+		const loginData = {
 			email: data.get('email'),
 			password: data.get('password'),
-		});
+		};
+		try {
+			await login(loginData);
+			toast.success('Welcome👋👋', { id: toastId });
+			navigate(location.state?.from || '/', { replace: true });
+		} catch (error) {
+			console.log('Inloginpage', error.message);
+			toast.error(error.message, { id: toastId });
+		}
 	};
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<Box
 				sx={{
-					marginTop: 8,
+					my: 2,
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
@@ -82,7 +97,7 @@ const Login = () => {
 					</Grid>
 				</Box>
 			</Box>
-			<hr />
+
 			<SocialLogin />
 			<Typography
 				variant="body2"

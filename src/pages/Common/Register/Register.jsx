@@ -7,24 +7,60 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SocialLogin from '../../../components/Shared/SocialLogin';
+import useAuth from '../../../hooks/useAuth';
+import useUpdateUser from '../../../hooks/useUpdateUser';
+import toast from 'react-hot-toast';
 
 const Register = () => {
-	const handleSubmit = event => {
+	const { createUser, updateUser } = useAuth();
+	const { mutate: updateUserInDB } = useUpdateUser();
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	const handleSubmit = async event => {
 		event.preventDefault();
+		const toastId = toast.loading('Please wait...');
 		const data = new FormData(event.currentTarget);
-		console.log({
+		const userData = {
+			name: data.get('firstName') + ' ' + data.get('lastName'),
+			photoURL: data.get('photoURL'),
 			email: data.get('email'),
 			password: data.get('password'),
-		});
+		};
+		console.log(userData);
+		try {
+			const createUserResponse = await createUser(
+				userData.email,
+				userData.password
+			);
+			console.log(createUserResponse);
+			// update user photoURL and
+			const updateUserResponse = await updateUser(
+				userData.name,
+				userData.photoURL
+			);
+			console.log(updateUserResponse);
+			// insert user into the database
+			updateUserInDB({
+				name: userData.name,
+				email: userData.email,
+				photoURL: userData.photoURL,
+			});
+			toast.success('User Created successfully', { id: toastId });
+			navigate(location.state?.from || '/', { replace: true });
+		} catch (err) {
+			toast.error(err.message, { id: toastId });
+			console.log(err.message);
+		}
 	};
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<Box
 				sx={{
-					marginTop: 8,
+					my: 2,
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
@@ -59,6 +95,17 @@ const Register = () => {
 								label="Last Name"
 								name="lastName"
 								autoComplete="family-name"
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								variant="filled"
+								required
+								fullWidth
+								id="photoURL"
+								label="Photo URL"
+								name="photoURL"
+								autoComplete="photoURL"
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -111,7 +158,7 @@ const Register = () => {
 					</Grid>
 				</Box>
 			</Box>
-			<hr />
+
 			<SocialLogin />
 			<Typography
 				variant="body2"

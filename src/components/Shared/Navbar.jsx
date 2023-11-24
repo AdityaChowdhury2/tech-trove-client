@@ -13,13 +13,14 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { NavLink } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
-const pages = ['Products', 'Login', 'Register'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
+const auth = ['Login', 'Register'];
 const Navbar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
+	3;
+	const { user, logout } = useAuth();
 
 	const handleOpenNavMenu = event => {
 		setAnchorElNav(event.currentTarget);
@@ -35,7 +36,7 @@ const Navbar = () => {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
-	const user = false;
+
 	return (
 		<Container>
 			<AppBar color="transparent" position="static" elevation={0}>
@@ -88,27 +89,59 @@ const Navbar = () => {
 									display: { xs: 'block', md: 'none' },
 								}}
 							>
-								{pages.map(page => (
-									<NavLink
-										key={page}
-										to={`/${page.toLowerCase()}`}
-										style={{ textDecoration: 'none' }}
-									>
-										<MenuItem onClick={handleCloseNavMenu}>
-											<Typography
-												textAlign="center"
-												sx={{
-													color: 'primary.main',
-												}}
-											>
-												{page}
-											</Typography>
-										</MenuItem>
+								<MenuItem onClick={handleCloseNavMenu}>
+									<NavLink to={`/products`} style={{ textDecoration: 'none' }}>
+										<Typography
+											textAlign="center"
+											sx={{
+												color: 'primary.main',
+											}}
+										>
+											Products
+										</Typography>
 									</NavLink>
-								))}
+								</MenuItem>
 							</Menu>
+							{user ? (
+								<></>
+							) : (
+								<Menu
+									elevation={2}
+									sx={{ mt: '45px' }}
+									id="menu-appbar"
+									anchorEl={anchorElUser}
+									anchorOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									open={Boolean(anchorElUser)}
+									onClose={handleCloseUserMenu}
+								>
+									{auth.map(auth => (
+										<MenuItem key={auth} onClick={handleCloseNavMenu}>
+											<NavLink
+												to={`${auth}`}
+												style={{ textDecoration: 'none' }}
+											>
+												<Typography
+													textAlign="center"
+													sx={{
+														color: 'primary.main',
+													}}
+												>
+													{auth}
+												</Typography>
+											</NavLink>
+										</MenuItem>
+									))}
+								</Menu>
+							)}
 						</Box>
-
 						<Grid
 							sx={{
 								mr: 2,
@@ -141,38 +174,67 @@ const Navbar = () => {
 								},
 							}}
 						>
-							{pages.map(page => (
-								<NavLink
-									key={page}
-									to={`/${page.toLowerCase()}`}
-									style={{ textDecoration: 'none' }}
+							<NavLink to={`/products`} style={{ textDecoration: 'none' }}>
+								<Button
+									onClick={handleCloseNavMenu}
+									sx={{
+										my: 2,
+										color: 'primary.main',
+										'&:hover': {
+											color: 'primary.800',
+										},
+										fontWeight: 700,
+										display: 'block',
+									}}
 								>
-									<Button
-										onClick={handleCloseNavMenu}
-										sx={{
-											my: 2,
-											color: 'primary.main',
-											'&:hover': {
-												color: 'primary.800',
-											},
-											fontWeight: 700,
-											display: 'block',
-										}}
-									>
-										{page}
-									</Button>
-								</NavLink>
-							))}
+									Products
+								</Button>
+							</NavLink>
+							{user ? (
+								<> </>
+							) : (
+								<>
+									<NavLink to={`/login`} style={{ textDecoration: 'none' }}>
+										<Button
+											onClick={handleCloseNavMenu}
+											sx={{
+												my: 2,
+												color: 'primary.main',
+												'&:hover': {
+													color: 'primary.800',
+												},
+												fontWeight: 700,
+												display: 'block',
+											}}
+										>
+											Sign In
+										</Button>
+									</NavLink>
+									<NavLink to={`/register`} style={{ textDecoration: 'none' }}>
+										<Button
+											onClick={handleCloseNavMenu}
+											sx={{
+												my: 2,
+												color: 'primary.main',
+												'&:hover': {
+													color: 'primary.800',
+												},
+												fontWeight: 700,
+												display: 'block',
+											}}
+										>
+											Sign Up
+										</Button>
+									</NavLink>
+								</>
+							)}
 						</Box>
 
 						{user && (
 							<Box sx={{ flexGrow: 0 }}>
-								<Tooltip title="Open settings">
+								<Tooltip title="Open user menu">
 									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-										<Avatar
-											alt="Remy Sharp"
-											src="/static/images/avatar/2.jpg"
-										/>
+										<Avatar alt="Remy Sharp" src={user?.photoURL} />
 									</IconButton>
 								</Tooltip>
 								<Menu
@@ -192,11 +254,24 @@ const Navbar = () => {
 									open={Boolean(anchorElUser)}
 									onClose={handleCloseUserMenu}
 								>
-									{settings.map(setting => (
-										<MenuItem key={setting} onClick={handleCloseUserMenu}>
-											<Typography textAlign="center">{setting}</Typography>
+									<MenuItem sx={{ cursor: 'default' }}>
+										<Typography variant="body1" textAlign={'center'}>
+											{user.displayName}
+										</Typography>
+									</MenuItem>
+
+									<NavLink
+										to={'/dashboard'}
+										style={{ textDecoration: 'none', color: 'inherit' }}
+									>
+										<MenuItem>
+											<Typography textAlign="center">Dashboard</Typography>
 										</MenuItem>
-									))}
+									</NavLink>
+
+									<MenuItem onClick={() => logout()}>
+										<Typography textAlign="center">Logout</Typography>
+									</MenuItem>
 								</Menu>
 							</Box>
 						)}
