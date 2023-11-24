@@ -13,6 +13,11 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers';
 import ManageCoupons from '../pages/Dashboard/Admin/ManageCoupons';
 import PrivateRoute from './PrivateRoute';
 import AdminRoute from './AdminRoute';
+import ProductReview from '../pages/Dashboard/Moderator/ProductReview';
+import ReportedProduct from '../pages/Dashboard/Moderator/ReportedProduct';
+import ModeratorRoute from './ModeratorRoute';
+import GuestRoute from './GuestRoute';
+import DashboardHome from '../pages/Dashboard/DashboardHome';
 
 const Routes = createBrowserRouter([
 	{
@@ -35,18 +40,35 @@ const Routes = createBrowserRouter([
 			</PrivateRoute>
 		),
 		children: [
+			//common route
+			{
+				path: '/dashboard',
+				element: <DashboardHome />,
+			},
 			// user routes
 			{
 				path: 'my-profile',
-				element: <UserProfile />,
+				element: (
+					<GuestRoute>
+						<UserProfile />
+					</GuestRoute>
+				),
 			},
 			{
 				path: 'add-product',
-				element: <AddProduct />,
+				element: (
+					<GuestRoute>
+						<AddProduct />
+					</GuestRoute>
+				),
 			},
 			{
 				path: 'my-products',
-				element: <MyProducts />,
+				element: (
+					<GuestRoute>
+						<MyProducts />
+					</GuestRoute>
+				),
 			},
 			// admin routes
 			{
@@ -71,6 +93,23 @@ const Routes = createBrowserRouter([
 					<AdminRoute>
 						<ManageCoupons />
 					</AdminRoute>
+				),
+			},
+			// moderator routes
+			{
+				path: 'product-review',
+				element: (
+					<ModeratorRoute>
+						<ProductReview />
+					</ModeratorRoute>
+				),
+			},
+			{
+				path: 'reported-product',
+				element: (
+					<ModeratorRoute>
+						<ReportedProduct />
+					</ModeratorRoute>
 				),
 			},
 		],
