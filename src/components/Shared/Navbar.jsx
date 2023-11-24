@@ -70,58 +70,78 @@ const Navbar = () => {
 							>
 								<MenuIcon />
 							</IconButton>
-							<Menu
-								elevation={2}
-								id="menu-appbar"
-								anchorEl={anchorElNav}
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'left',
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'left',
-								}}
-								open={Boolean(anchorElNav)}
-								onClose={handleCloseNavMenu}
-								sx={{
-									display: { xs: 'block', md: 'none' },
-								}}
-							>
-								<MenuItem onClick={handleCloseNavMenu}>
-									<NavLink to={`/products`} style={{ textDecoration: 'none' }}>
-										<Typography
-											textAlign="center"
-											sx={{
-												color: 'primary.main',
-											}}
-										>
-											Products
-										</Typography>
-									</NavLink>
-								</MenuItem>
-							</Menu>
+
 							{user ? (
-								<></>
-							) : (
 								<Menu
 									elevation={2}
-									sx={{ mt: '45px' }}
 									id="menu-appbar"
-									anchorEl={anchorElUser}
+									anchorEl={anchorElNav}
 									anchorOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
+										vertical: 'bottom',
+										horizontal: 'left',
 									}}
 									keepMounted
 									transformOrigin={{
 										vertical: 'top',
-										horizontal: 'right',
+										horizontal: 'left',
 									}}
-									open={Boolean(anchorElUser)}
-									onClose={handleCloseUserMenu}
+									open={Boolean(anchorElNav)}
+									onClose={handleCloseNavMenu}
+									sx={{
+										display: { xs: 'block', md: 'none' },
+									}}
 								>
+									<MenuItem onClick={handleCloseNavMenu}>
+										<NavLink
+											to={`/products`}
+											style={{ textDecoration: 'none' }}
+										>
+											<Typography
+												textAlign="center"
+												sx={{
+													color: 'primary.main',
+												}}
+											>
+												Products
+											</Typography>
+										</NavLink>
+									</MenuItem>
+								</Menu>
+							) : (
+								<Menu
+									elevation={2}
+									id="menu-appbar"
+									anchorEl={anchorElNav}
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'left',
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'left',
+									}}
+									open={Boolean(anchorElNav)}
+									onClose={handleCloseNavMenu}
+									sx={{
+										display: { xs: 'block', md: 'none' },
+									}}
+								>
+									<MenuItem onClick={handleCloseNavMenu}>
+										<NavLink
+											to={`/products`}
+											style={{ textDecoration: 'none' }}
+										>
+											<Typography
+												textAlign="center"
+												sx={{
+													color: 'primary.main',
+												}}
+											>
+												Products
+											</Typography>
+										</NavLink>
+									</MenuItem>
 									{auth.map(auth => (
 										<MenuItem key={auth} onClick={handleCloseNavMenu}>
 											<NavLink
@@ -191,7 +211,7 @@ const Navbar = () => {
 								</Button>
 							</NavLink>
 							{user ? (
-								<> </>
+								<></>
 							) : (
 								<>
 									<NavLink to={`/login`} style={{ textDecoration: 'none' }}>
@@ -234,7 +254,7 @@ const Navbar = () => {
 							<Box sx={{ flexGrow: 0 }}>
 								<Tooltip title="Open user menu">
 									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-										<Avatar alt="Remy Sharp" src={user?.photoURL} />
+										<Avatar alt={user} src={user?.photoURL} />
 									</IconButton>
 								</Tooltip>
 								<Menu

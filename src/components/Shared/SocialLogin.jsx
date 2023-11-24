@@ -3,15 +3,22 @@ import GoogleIcon from '@mui/icons-material/Google';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useUpdateUser from '../../hooks/useUpdateUser';
 
 const SocialLogin = () => {
 	const { googleSignIn } = useAuth();
+	const { mutate: updateUserInDB } = useUpdateUser();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const handleGoogleLogin = async () => {
 		const toastId = toast.loading('Signing in...');
 		try {
-			await googleSignIn();
+			const response = await googleSignIn();
+			await updateUserInDB({
+				name: response.user?.name,
+				email: response.user?.email,
+				photoURL: response.user?.photoURL,
+			});
 			toast.success('Welcome👋👋', { id: toastId });
 			navigate(location.state?.from || '/', { replace: true });
 		} catch (error) {
