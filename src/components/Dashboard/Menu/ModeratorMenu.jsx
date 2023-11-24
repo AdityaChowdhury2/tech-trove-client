@@ -4,16 +4,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { NavLink } from 'react-router-dom';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
-const GuestMenu = () => {
+const ModeratorMenu = () => {
 	return (
 		<div>
 			<ListItem disablePadding sx={{ display: 'block' }}>
 				<NavLink
-					to={'my-profile'}
+					to={'product-review'}
 					style={{ textDecoration: 'none', color: 'inherit' }}
 				>
 					<ListItemButton
@@ -30,10 +27,10 @@ const GuestMenu = () => {
 								justifyContent: 'center',
 							}}
 						>
-							<AccountBoxIcon />
+							<InboxIcon />
 						</ListItemIcon>
 						<ListItemText
-							primary={'My Profile'}
+							primary={'Product Review'}
 							sx={{ opacity: open ? 1 : 0 }}
 						/>
 					</ListItemButton>
@@ -41,7 +38,7 @@ const GuestMenu = () => {
 			</ListItem>
 			<ListItem disablePadding sx={{ display: 'block' }}>
 				<NavLink
-					to={'add-product'}
+					to={'reported-product'}
 					style={{ textDecoration: 'none', color: 'inherit' }}
 				>
 					<ListItemButton
@@ -58,38 +55,10 @@ const GuestMenu = () => {
 								justifyContent: 'center',
 							}}
 						>
-							<AddCircleOutlineIcon />
+							<InboxIcon />
 						</ListItemIcon>
 						<ListItemText
-							primary={'Add Product'}
-							sx={{ opacity: open ? 1 : 0 }}
-						/>
-					</ListItemButton>
-				</NavLink>
-			</ListItem>
-			<ListItem disablePadding sx={{ display: 'block' }}>
-				<NavLink
-					to={'my-products'}
-					style={{ textDecoration: 'none', color: 'inherit' }}
-				>
-					<ListItemButton
-						sx={{
-							minHeight: 48,
-							justifyContent: open ? 'initial' : 'center',
-							px: 2.5,
-						}}
-					>
-						<ListItemIcon
-							sx={{
-								minWidth: 0,
-								mr: open ? 3 : 'auto',
-								justifyContent: 'center',
-							}}
-						>
-							<BusinessCenterIcon />
-						</ListItemIcon>
-						<ListItemText
-							primary={'My Products'}
+							primary={'Reported Product'}
 							sx={{ opacity: open ? 1 : 0 }}
 						/>
 					</ListItemButton>
@@ -99,4 +68,4 @@ const GuestMenu = () => {
 	);
 };
 
-export default GuestMenu;
+export default ModeratorMenu;

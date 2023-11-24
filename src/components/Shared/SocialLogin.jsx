@@ -15,7 +15,7 @@ const SocialLogin = () => {
 		try {
 			const response = await googleSignIn();
 			await updateUserInDB({
-				name: response.user?.name,
+				name: response.user?.displayName,
 				email: response.user?.email,
 				photoURL: response.user?.photoURL,
 			});

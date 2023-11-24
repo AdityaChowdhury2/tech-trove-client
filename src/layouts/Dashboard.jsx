@@ -4,14 +4,20 @@ import MuiDrawer from '@mui/material/Drawer';
 
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-
-import { Outlet } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
+import { NavLink, Outlet } from 'react-router-dom';
 import DashboardNavbar from '../pages/Dashboard/DashBoardNavbar';
 import { useAppStore } from '../store/AppStore';
 import GuestMenu from '../components/Dashboard/Menu/GuestMenu';
 import AdminMenu from '../components/Dashboard/Menu/AdminMenu';
+import ModeratorMenu from '../components/Dashboard/Menu/ModeratorMenu';
+import InventoryIcon from '@mui/icons-material/Inventory';
+
 const drawerWidth = 240;
 
 const openedMixin = theme => ({
@@ -69,15 +75,75 @@ export default function MiniDrawer() {
 			<DashboardNavbar />
 			<Box sx={{ display: 'flex' }}>
 				<CssBaseline />
-
 				<Drawer variant="permanent" open={open}>
 					<DrawerHeader></DrawerHeader>
 					<Divider />
 					<List>
 						{/* Guest Menu */}
-						{/* <GuestMenu /> */}
+						<GuestMenu />
+						{/* Moderator Menu */}
+						{/* <ModeratorMenu /> */}
 						{/* Admin Menu */}
-						<AdminMenu />
+						{/* <AdminMenu /> */}
+					</List>
+					<Divider />
+					<List>
+						<ListItem disablePadding sx={{ display: 'block' }}>
+							<NavLink
+								to={'/'}
+								style={{ textDecoration: 'none', color: 'inherit' }}
+							>
+								<ListItemButton
+									sx={{
+										minHeight: 48,
+										justifyContent: open ? 'initial' : 'center',
+										px: 2.5,
+									}}
+								>
+									<ListItemIcon
+										sx={{
+											minWidth: 0,
+											mr: open ? 3 : 'auto',
+											justifyContent: 'center',
+										}}
+									>
+										<HomeIcon />
+									</ListItemIcon>
+									<ListItemText
+										primary={'Home'}
+										sx={{ opacity: open ? 1 : 0 }}
+									/>
+								</ListItemButton>
+							</NavLink>
+						</ListItem>
+						<ListItem disablePadding sx={{ display: 'block' }}>
+							<NavLink
+								to={'/products'}
+								style={{ textDecoration: 'none', color: 'inherit' }}
+							>
+								<ListItemButton
+									sx={{
+										minHeight: 48,
+										justifyContent: open ? 'initial' : 'center',
+										px: 2.5,
+									}}
+								>
+									<ListItemIcon
+										sx={{
+											minWidth: 0,
+											mr: open ? 3 : 'auto',
+											justifyContent: 'center',
+										}}
+									>
+										<InventoryIcon />
+									</ListItemIcon>
+									<ListItemText
+										primary={'All Products'}
+										sx={{ opacity: open ? 1 : 0 }}
+									/>
+								</ListItemButton>
+							</NavLink>
+						</ListItem>
 					</List>
 				</Drawer>
 				<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
