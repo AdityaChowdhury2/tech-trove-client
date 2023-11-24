@@ -15,6 +15,7 @@ import Heading from '../../../components/Shared/Heading';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import useUserRole from '../../../hooks/useUserRole';
+import { Link } from 'react-router-dom';
 
 const ManageUsers = () => {
 	const axiosPublic = useAxiosPublic();
@@ -27,7 +28,8 @@ const ManageUsers = () => {
 	});
 
 	const { mutate } = useMutation({
-		mutationFn: async (role, email) => {
+		mutationFn: async ({ role, email }) => {
+			console.log(role, email);
 			const res = await axiosPublic.patch(`/api/v1/users/${email}`, { role });
 			return res.data;
 		},
@@ -92,6 +94,9 @@ const ManageUsers = () => {
 										<TableCell align="center">{user.email}</TableCell>
 										<TableCell align="center">
 											<Button
+												onClick={() => {
+													mutate({ role: 'moderator', email: user.email });
+												}}
 												size="small"
 												variant="contained"
 												disabled={
@@ -104,7 +109,7 @@ const ManageUsers = () => {
 										<TableCell align="center">
 											<Button
 												onClick={() => {
-													mutate('admin', user?.email);
+													mutate({ role: 'admin', email: user.email });
 												}}
 												size="small"
 												variant="contained"
