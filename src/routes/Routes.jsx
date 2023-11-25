@@ -18,6 +18,7 @@ import ReportedProduct from '../pages/Dashboard/Moderator/ReportedProduct';
 import ModeratorRoute from './ModeratorRoute';
 import GuestRoute from './GuestRoute';
 import DashboardHome from '../pages/Dashboard/DashboardHome';
+import Products from '../pages/Products';
 
 const Routes = createBrowserRouter([
 	{
@@ -29,6 +30,10 @@ const Routes = createBrowserRouter([
 			{
 				path: '/',
 				element: <Home />,
+			},
+			{
+				path: 'products',
+				element: <Products />,
 			},
 		],
 	},
