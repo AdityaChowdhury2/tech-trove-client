@@ -1,9 +1,10 @@
 import { Container } from '@mui/material';
+import Featured from '../../components/Home/Featured';
 
 const Home = () => {
 	return (
 		<Container>
-			<p> Hello I Am Home </p>
+			<Featured />
 		</Container>
 	);
 };
