@@ -36,7 +36,14 @@ const Featured = () => {
 					}
 				/>
 				{isLoading ? (
-					<Loading />
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+						}}
+					>
+						<Loading />
+					</div>
 				) : (
 					<Grid container spacing={3} sx={{ marginTop: 5 }}>
 						{featuredProducts &&

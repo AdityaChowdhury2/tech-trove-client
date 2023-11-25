@@ -93,6 +93,13 @@ const Navbar = () => {
 								}}
 							>
 								<MenuItem onClick={handleCloseNavMenu}>
+									<Link to={'/'} style={{ textDecoration: 'none' }}>
+										<Typography textAlign="center" color={'primary.main'}>
+											Home
+										</Typography>
+									</Link>
+								</MenuItem>
+								<MenuItem onClick={handleCloseNavMenu}>
 									<Link to={'/products'} style={{ textDecoration: 'none' }}>
 										<Typography textAlign="center" color={'primary.main'}>
 											Products
@@ -120,6 +127,16 @@ const Navbar = () => {
 										display: { xs: 'block', md: 'none' },
 									}}
 								>
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Link
+											to={'/'}
+											style={{ textDecoration: 'none', color: 'primary.main' }}
+										>
+											<Typography textAlign="center" color={'primary.main'}>
+												Home
+											</Typography>
+										</Link>
+									</MenuItem>
 									<MenuItem onClick={handleCloseNavMenu}>
 										<Link
 											to={'/products'}
@@ -183,6 +200,19 @@ const Navbar = () => {
 								},
 							}}
 						>
+							<Link to={'/'} style={{ textDecoration: 'none' }}>
+								<Button
+									onClick={handleCloseNavMenu}
+									sx={{
+										my: 2,
+										color: 'primary.main',
+										display: 'block',
+										fontWeight: 600,
+									}}
+								>
+									Home
+								</Button>
+							</Link>
 							<Link to={'/products'} style={{ textDecoration: 'none' }}>
 								<Button
 									onClick={handleCloseNavMenu}

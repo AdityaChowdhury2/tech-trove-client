@@ -8,6 +8,9 @@ const theme = createTheme({
 			100: '#7ccede',
 			800: '#1D6472',
 		},
+		warning: {
+			main: '#ffb703',
+		},
 	},
 });
 

@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import useAxiosPublic from '../hooks/useAxiosPublic';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { Box, Container, Grid, Pagination, Stack } from '@mui/material';
-import Heading from '../components/Shared/Heading';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { useState } from 'react';
-import ProductCard from '../components/Home/ProductCard';
-import Loading from '../components/Shared/Loading';
-import SectionHeader from '../components/Shared/SectionHeader';
+import ProductCard from '../../components/Home/ProductCard';
+import Loading from '../../components/Shared/Loading';
+import SectionHeader from '../../components/Shared/SectionHeader';
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -100,7 +99,7 @@ const Products = () => {
 				<Grid container spacing={3} sx={{ marginTop: 5 }}>
 					{products &&
 						products.map(product => (
-							<Grid key={product._id} item xs={12} md={6} xl={4}>
+							<Grid key={product._id} item xs={12} md={6} xl={3}>
 								<ProductCard product={product} />
 							</Grid>
 						))}
@@ -115,21 +114,19 @@ const Products = () => {
 						<Loading />
 					</div>
 				)}
+
 				<Stack
 					alignItems={'center'}
 					sx={{
 						mt: 5,
 					}}
 				>
-					{total > 20 && (
-						<Pagination
-							color="primary"
-							onChange={(_, value) => {
-								setCurrentPage(value - 1);
-							}}
-							count={pagesCount}
-						/>
-					)}
+					<Pagination
+						color="primary"
+						onChange={(e, value) => setCurrentPage(value - 1)}
+						// onChange={(_, value) => setCurrentPage(value - 1)}
+						count={pagesCount}
+					/>
 				</Stack>
 			</Container>
 		</Box>

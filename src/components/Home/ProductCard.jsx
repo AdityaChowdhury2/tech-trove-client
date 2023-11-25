@@ -77,7 +77,7 @@ const ProductCard = ({ product }) => {
 						fontSize={{ sm: '24px', lg: '16px' }}
 					>
 						<Link
-							to={`/products/:${product._id}`}
+							to={`/products/${product._id}`}
 							style={{ textDecoration: 'none', color: 'inherit' }}
 						>
 							{product.name}
@@ -86,7 +86,10 @@ const ProductCard = ({ product }) => {
 				}
 				subheader={
 					<Typography variant="p" component={'p'} fontSize={{ sm: '12px' }}>
-						{formatDate(product.timestamp).replace('about', '')} ago
+						{(product?.timestamp &&
+							formatDate(product?.timestamp).replace('about', '')) ||
+							0}{' '}
+						ago
 					</Typography>
 				}
 			/>
@@ -109,6 +112,7 @@ const ProductCard = ({ product }) => {
 							<span key={tag}>#{tag} </span>
 						))}
 					</Typography>
+					{product.status}
 				</CardContent>
 				<CardActions sx={{ gap: 1 }}>
 					<IconButton
