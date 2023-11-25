@@ -7,22 +7,20 @@ import {
 	TableCell,
 	TableContainer,
 	TableHead,
-	Divider,
 	TableRow,
 	Button,
 } from '@mui/material';
 import Heading from '../../../components/Shared/Heading';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
-import useUserRole from '../../../hooks/useUserRole';
-import { Link } from 'react-router-dom';
+
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageUsers = () => {
-	const axiosPublic = useAxiosPublic();
+	const axiosSecure = useAxiosSecure();
 	const { data: users = [], refetch } = useQuery({
 		queryKey: ['users'],
 		queryFn: async () => {
-			const response = await axiosPublic('/api/v1/users');
+			const response = await axiosSecure.get('/api/v1/users');
 			return response.data;
 		},
 	});
@@ -30,7 +28,7 @@ const ManageUsers = () => {
 	const { mutate } = useMutation({
 		mutationFn: async ({ role, email }) => {
 			console.log(role, email);
-			const res = await axiosPublic.patch(`/api/v1/users/${email}`, { role });
+			const res = await axiosSecure.patch(`/api/v1/users/${email}`, { role });
 			return res.data;
 		},
 		onSuccess: () => {

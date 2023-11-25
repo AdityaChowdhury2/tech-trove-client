@@ -156,7 +156,7 @@ export default function MiniDrawer() {
 					sx={{
 						flexGrow: 1,
 						p: 3,
-						overflow: 'scroll',
+						overflowX: 'auto',
 						paddingX: { xs: 1, md: 5 },
 					}}
 				>
