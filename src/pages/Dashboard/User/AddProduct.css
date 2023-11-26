@@ -1,0 +1,21 @@
+.tagInputFieldClass{
+    border: 1px solid ;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+.tagClass{
+    border: 1px solid rgb(90, 169, 205);
+    border-radius: 5px;
+    padding: 2px;
+    margin-right: 10px;
+}
+.removeClass{
+    color: #ef4444;
+    font-size: 1rem; 
+    margin-left: 5px; 
+    border: none;
+    background: #d4d4d8;
+}

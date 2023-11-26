@@ -19,7 +19,6 @@ import ModeratorRoute from './ModeratorRoute';
 import GuestRoute from './GuestRoute';
 import DashboardHome from '../pages/Dashboard/DashboardHome';
 import Products from '../pages/Common/Products';
-import axios from 'axios';
 import ProductDetails from '../pages/Common/ProductDetails';
 
 const Routes = createBrowserRouter([
@@ -39,7 +38,11 @@ const Routes = createBrowserRouter([
 			},
 			{
 				path: 'products/:productId',
-				element: <ProductDetails />,
+				element: (
+					<PrivateRoute>
+						<ProductDetails />
+					</PrivateRoute>
+				),
 			},
 		],
 	},

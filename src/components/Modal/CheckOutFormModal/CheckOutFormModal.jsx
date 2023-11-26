@@ -169,7 +169,6 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 CheckOutFormModal.propTypes = {
 	handleClose: PropTypes.func,
 	open: PropTypes.bool,
-	handleSubmit: PropTypes.func,
 };
 
 export default CheckOutFormModal;
