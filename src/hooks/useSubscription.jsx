@@ -8,7 +8,7 @@ const useGetSubscription = () => {
 	const { data = {}, refetch } = useQuery({
 		queryFn: async () => {
 			const response = await axiosPublic(`/api/v1/user/${user?.email}`);
-			console.log(response.data);
+			console.log('response from subscription ', response.data);
 			return response.data;
 		},
 		queryKey: ['user', user?.email],

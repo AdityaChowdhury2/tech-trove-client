@@ -16,59 +16,14 @@ import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
 	const formatDate = date => {
-		return formatDistance(new Date(date), new Date('2023-12-03T12:50:00Z'));
+		// const today = new Date();
+		return formatDistance(new Date(date), new Date('2023-11-04T12:50:00Z'));
 	};
 
-	const [anchorEl, setAnchorEl] = useState(null);
-	const isMenuOpen = Boolean(anchorEl);
-
-	const handleProfileMenuOpen = event => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleMenuClose = () => {
-		setAnchorEl(null);
-	};
-	const renderMenu = (
-		<Menu
-			anchorEl={anchorEl}
-			anchorOrigin={{
-				vertical: 'top',
-				horizontal: 'center',
-			}}
-			keepMounted
-			transformOrigin={{
-				vertical: 'top',
-				horizontal: 'right',
-			}}
-			open={isMenuOpen}
-			onClose={handleMenuClose}
-			elevation={1}
-			sx={{ padding: '0px' }}
-		>
-			<MenuItem
-				onClick={() => {
-					console.log('Reported');
-				}}
-				sx={{
-					gap: 2,
-
-					height: 'auto',
-				}}
-			>
-				<MdOutlineReportProblem size={'16'} color="gold" />
-				Report
-			</MenuItem>
-		</Menu>
-	);
 	return (
 		<Card>
 			<CardHeader
 				disableTypography
-				action={
-					<IconButton onClick={handleProfileMenuOpen} aria-label="settings">
-						<MoreVertIcon />
-					</IconButton>
-				}
 				title={
 					<Typography
 						variant="p"
@@ -86,10 +41,11 @@ const ProductCard = ({ product }) => {
 				}
 				subheader={
 					<Typography variant="p" component={'p'} fontSize={{ sm: '12px' }}>
-						{(product?.timestamp &&
+						{product?.timestamp && formatDate(product?.timestamp)}
+						{/* {(product?.timestamp &&
 							formatDate(product?.timestamp).replace('about', '')) ||
 							0}{' '}
-						ago
+						ago */}
 					</Typography>
 				}
 			/>
@@ -109,7 +65,7 @@ const ProductCard = ({ product }) => {
 				<CardContent>
 					<Typography variant="body2" color="text.secondary">
 						{product.tags.map(tag => (
-							<span key={tag}>#{tag} </span>
+							<span key={tag.id}>#{tag.text} </span>
 						))}
 					</Typography>
 					{product.status}
@@ -124,7 +80,6 @@ const ProductCard = ({ product }) => {
 					</IconButton>
 				</CardActions>
 			</div>
-			{renderMenu}
 		</Card>
 	);
 };

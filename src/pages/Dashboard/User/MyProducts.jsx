@@ -20,10 +20,10 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
 import DeleteConfirmationDialog from '../../../components/Modal/DeleteConfirmationDialog';
 import useMyProducts from '../../../hooks/useMyProducts';
+import useDeleteProduct from '../../../hooks/useDeleteProduct';
 
 const MyProducts = () => {
-	const { user } = useAuth();
-	const axiosSecure = useAxiosSecure();
+	const { mutateAsync: deleteProduct } = useDeleteProduct();
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
@@ -39,17 +39,17 @@ const MyProducts = () => {
 	const { myProducts, refetch } = useMyProducts();
 
 	const handleDelete = async productId => {
-		const toastId = toast.loading('Deleting Product...');
-		const response = await axiosSecure.delete(
-			`/api/v1/user/products/${productId}`
-		);
-		if (response.data.deletedCount) {
-			toast.success('Product deleted successfully', { id: toastId });
-			refetch();
-			handleAlertClose();
-		} else {
-			toast.error('Deleting Failed', { id: toastId });
-		}
+		const response = deleteProduct(productId);
+		toast.promise(response, {
+			loading: 'Loading',
+			success: 'Product deleted successfully',
+			error: 'product deletion failed',
+		});
+		await response
+			.then(() => {
+				refetch();
+			})
+			.finally(() => handleAlertClose());
 	};
 
 	return (

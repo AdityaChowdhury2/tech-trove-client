@@ -18,6 +18,7 @@ import ReviewCard from '../../components/ReviewCard';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import useUserRole from '../../hooks/useUserRole';
 
 const ProductDetails = () => {
 	// TODO: add functionality for Report and upvote buttons
@@ -43,6 +44,19 @@ const ProductDetails = () => {
 			return data;
 		},
 	});
+
+	const { data: report = [], refetch: refetchReport } = useQuery({
+		queryKey: ['reports'],
+		queryFn: async () => {
+			const { data } = await axiosSecure(
+				`/api/v1/reports?productId=${productId}&reportBy=${user.email}`
+			);
+			return data;
+		},
+	});
+
+	const isOwner = user?.email === product?.owner?.email;
+
 	const handleFromSubmit = async e => {
 		e.preventDefault();
 		const toastId = toast.loading('Submitting your Review ...');
@@ -70,6 +84,23 @@ const ProductDetails = () => {
 			toast.error('Failed ❌❌', { id: toastId });
 		}
 	};
+
+	const handleReport = async () => {
+		const report = {
+			productId,
+			name: product.name,
+			email: user.email,
+			date: new Date(),
+		};
+		try {
+			await axiosSecure.post('/api/v1/users/reports', report);
+			toast.success('Product Reported Successfully');
+			refetchReport();
+		} catch (error) {
+			toast.error('Failed To report');
+		}
+	};
+	const { role } = useUserRole();
 
 	return (
 		<Grid>
@@ -121,24 +152,28 @@ const ProductDetails = () => {
 
 						<Stack direction={'row'} sx={{ marginY: '10px' }}>
 							{product.tags?.map(tag => (
-								<Typography key={tag} variant="body1" component={'p'}>
-									#{tag}
+								<Typography key={tag.id} variant="body1" component={'p'}>
+									#{tag.text}
 									&nbsp;
 								</Typography>
 							))}
 						</Stack>
-						<Stack direction={'row'} spacing={5}>
-							<Button variant="contained" startIcon={<BiUpvote size={12} />}>
-								Upvote
-							</Button>
-							<Button
-								variant="contained"
-								color="warning"
-								startIcon={<BiUpvote size={12} />}
-							>
-								Report
-							</Button>
-						</Stack>
+						{!isOwner && role === 'guest' && (
+							<Stack direction={'row'} spacing={5}>
+								<Button variant="contained" startIcon={<BiUpvote size={12} />}>
+									Upvote
+								</Button>
+								<Button
+									disabled={!!report.length}
+									onClick={handleReport}
+									variant="contained"
+									color="warning"
+									startIcon={<BiUpvote size={12} />}
+								>
+									Report
+								</Button>
+							</Stack>
+						)}
 					</Box>
 					<Typography
 						variant="h6"

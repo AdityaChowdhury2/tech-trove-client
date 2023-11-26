@@ -11,8 +11,52 @@ import {
 	TableRow,
 } from '@mui/material';
 import Heading from '../../../components/Shared/Heading';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router-dom';
+import DeleteConfirmationDialog from '../../../components/Modal/DeleteConfirmationDialog';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import useDeleteProduct from '../../../hooks/useDeleteProduct';
 
 const ReportedProduct = () => {
+	const navigate = useNavigate();
+	const axiosSecure = useAxiosSecure();
+	const { data: reports, refetch } = useQuery({
+		queryKey: ['reports'],
+		queryFn: async () => {
+			const response = await axiosSecure('/api/v1/reports');
+			return response.data;
+		},
+	});
+
+	const { mutateAsync: deleteProduct } = useDeleteProduct();
+	const [alertOpen, setAlertOpen] = useState(false);
+
+	const handleAlertClickOpen = () => {
+		setAlertOpen(true);
+	};
+
+	const handleAlertClose = () => {
+		setAlertOpen(false);
+	};
+	// const { myProducts, refetch } = useMyProducts();
+
+	const handleDelete = async productId => {
+		const response = deleteProduct(productId);
+		toast.promise(response, {
+			loading: 'Loading',
+			success: 'Product deleted successfully',
+			error: 'product deletion failed',
+		});
+		await response
+			.then(() => {
+				axiosSecure.delete(`/api/v1/reports/${productId}`).then(() => {
+					refetch();
+				});
+			})
+			.finally(() => handleAlertClose());
+	};
 	return (
 		<div>
 			<Box height={40} />
@@ -37,6 +81,12 @@ const ReportedProduct = () => {
 								</TableCell>
 								<TableCell
 									sx={{ fontWeight: 700, color: 'primary.100' }}
+									align="left"
+								>
+									Reported By
+								</TableCell>
+								<TableCell
+									sx={{ fontWeight: 700, color: 'primary.100' }}
 									align="center"
 								>
 									View Details
@@ -51,24 +101,51 @@ const ReportedProduct = () => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							<TableRow
-								sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-							>
-								<TableCell component="th" scope="row">
-									1
-								</TableCell>
-								<TableCell align="left">Omuk lsdf</TableCell>
-								<TableCell align="center">
-									<Button size="small" variant="contained" color="success">
-										View Details
-									</Button>
-								</TableCell>
-								<TableCell align="center">
-									<Button size="small" variant="contained" color="error">
-										Delete
-									</Button>
-								</TableCell>
-							</TableRow>
+							{reports &&
+								reports.map(report => (
+									<TableRow
+										key={report._id}
+										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+									>
+										<TableCell component="th" scope="row">
+											1
+										</TableCell>
+										<TableCell align="left">{report.name}</TableCell>
+										<TableCell align="left">{report.email}</TableCell>
+										<TableCell align="center">
+											<Button
+												onClick={() =>
+													navigate(`/products/${report.productId}`)
+												}
+												size="small"
+												variant="contained"
+												color="primary"
+												sx={{ fontSize: { xs: 8, md: 14 } }}
+											>
+												View Details
+											</Button>
+										</TableCell>
+										<TableCell align="center">
+											<Button
+												onClick={handleAlertClickOpen}
+												size="small"
+												variant="contained"
+												color="error"
+												sx={{
+													fontSize: { xs: 8, md: 12 },
+												}}
+											>
+												Delete
+											</Button>
+										</TableCell>
+										<DeleteConfirmationDialog
+											handleClose={handleAlertClose}
+											handleDelete={handleDelete}
+											open={alertOpen}
+											id={report.productId}
+										/>
+									</TableRow>
+								))}
 						</TableBody>
 					</Table>
 				</TableContainer>

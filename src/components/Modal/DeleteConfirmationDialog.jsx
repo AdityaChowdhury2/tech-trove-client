@@ -30,7 +30,7 @@ const DeleteConfirmationDialog = ({ open, handleClose, handleDelete, id }) => {
 					variant="contained"
 					color="error"
 				>
-					Agree
+					Confirm
 				</Button>
 			</DialogActions>
 		</Dialog>
