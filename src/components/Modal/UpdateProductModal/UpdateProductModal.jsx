@@ -3,6 +3,9 @@ import Modal from '@mui/material/Modal';
 import { useState } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input';
 import { Box, Button, Grid, Stack, TextField } from '@mui/material';
+import toast from 'react-hot-toast';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router-dom';
 
 const KeyCodes = {
 	comma: 188,
@@ -22,8 +25,10 @@ const style = {
 };
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
-const UpdateProductModal = ({ handleClose, open }) => {
-	const [tags, setTags] = useState([]);
+const UpdateProductModal = ({ handleClose, open, product, refetch }) => {
+	const axiosSecure = useAxiosSecure();
+	const navigate = useNavigate();
+	const [tags, setTags] = useState(product.tags);
 	const handleDelete = i => {
 		setTags(tags.filter((tag, index) => index !== i));
 	};
@@ -34,6 +39,38 @@ const UpdateProductModal = ({ handleClose, open }) => {
 
 	const handleTagClick = index => {
 		console.log('The tag at index ' + index + ' was clicked');
+	};
+
+	const handleProductUpdate = async e => {
+		e.preventDefault();
+		const formData = new FormData(e.target);
+		const form = {};
+		for (const data of formData.entries()) {
+			form[data[0]] = data[1];
+		}
+		const productData = {
+			name: form.productName,
+			image: form.productImage,
+			pageUrl: form.productPageLink,
+			description: form.description,
+			tags,
+		};
+		const toastId = toast.loading('Updating Product...');
+		try {
+			const response = await axiosSecure.patch(
+				`/api/v1/user/products/${product?._id}`,
+				productData
+			);
+			if (response.data.modifiedCount) {
+				toast.success('Product Updated successfully', { id: toastId });
+				e.target.reset();
+				setTags([]);
+				handleClose();
+				refetch();
+			} else toast.error('Product update failed', { id: toastId });
+		} catch (error) {
+			toast.error(error.message, { id: toastId });
+		}
 	};
 
 	return (
@@ -48,7 +85,11 @@ const UpdateProductModal = ({ handleClose, open }) => {
 				gap: '0.5em',
 			}}
 		>
-			<Box component={'form'} sx={{ ...style, minWidth: { xs: '300px' } }}>
+			<Box
+				component={'form'}
+				sx={{ ...style, minWidth: { xs: '300px' } }}
+				onSubmit={handleProductUpdate}
+			>
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
 						<TextField
@@ -57,6 +98,7 @@ const UpdateProductModal = ({ handleClose, open }) => {
 							type="text"
 							name="productName"
 							label="Product Name"
+							defaultValue={product.name}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -66,6 +108,7 @@ const UpdateProductModal = ({ handleClose, open }) => {
 							type="text"
 							name="productImage"
 							label="Product Image Url"
+							defaultValue={product.image}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -76,6 +119,7 @@ const UpdateProductModal = ({ handleClose, open }) => {
 							name="description"
 							id="description"
 							label="Description"
+							defaultValue={product.description}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -109,6 +153,7 @@ const UpdateProductModal = ({ handleClose, open }) => {
 							name="productPageLink"
 							id="productPageLink"
 							label="Product Website Link"
+							defaultValue={product.pageUrl}
 						/>
 					</Grid>
 				</Grid>
@@ -124,7 +169,9 @@ const UpdateProductModal = ({ handleClose, open }) => {
 
 UpdateProductModal.propTypes = {
 	handleClose: PropTypes.func,
+	refetch: PropTypes.func,
 	open: PropTypes.bool,
+	product: PropTypes.object,
 };
 
 export default UpdateProductModal;

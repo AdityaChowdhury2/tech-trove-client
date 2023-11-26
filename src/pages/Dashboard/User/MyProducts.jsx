@@ -14,12 +14,44 @@ import {
 import Heading from '../../../components/Shared/Heading';
 import { useState } from 'react';
 import UpdateProductModal from '../../../components/Modal/UpdateProductModal/UpdateProductModal';
+import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
+import DeleteConfirmationDialog from '../../../components/Modal/DeleteConfirmationDialog';
+import useMyProducts from '../../../hooks/useMyProducts';
 
 const MyProducts = () => {
-	const status = 'rejected';
+	const { user } = useAuth();
+	const axiosSecure = useAxiosSecure();
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
+	const [alertOpen, setAlertOpen] = useState(false);
+
+	const handleAlertClickOpen = () => {
+		setAlertOpen(true);
+	};
+
+	const handleAlertClose = () => {
+		setAlertOpen(false);
+	};
+	const { myProducts, refetch } = useMyProducts();
+
+	const handleDelete = async productId => {
+		const toastId = toast.loading('Deleting Product...');
+		const response = await axiosSecure.delete(
+			`/api/v1/user/products/${productId}`
+		);
+		if (response.data.deletedCount) {
+			toast.success('Product deleted successfully', { id: toastId });
+			refetch();
+			handleAlertClose();
+		} else {
+			toast.error('Deleting Failed', { id: toastId });
+		}
+	};
+
 	return (
 		<div>
 			<Box height={40} />
@@ -69,52 +101,72 @@ const MyProducts = () => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							<TableRow
-								sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-							>
-								<TableCell component="th" scope="row">
-									1
-								</TableCell>
-								<TableCell align="center">Omuk lsdf</TableCell>
-								<TableCell align="center">2</TableCell>
-								<TableCell align="center">
-									{status === 'pending' ? (
-										<Badge
-											badgeContent={status.toLocaleUpperCase()}
-											color="warning"
-										></Badge>
-									) : status === 'accepted' ? (
-										<Badge
-											badgeContent={status.toLocaleUpperCase()}
-											color="success"
-										></Badge>
-									) : (
-										<Badge
-											badgeContent={status.toLocaleUpperCase()}
-											color="error"
-										></Badge>
-									)}
-								</TableCell>
-								<TableCell align="center">
-									<Button
-										onClick={handleOpen}
-										size="small"
-										variant="contained"
-										color="success"
+							{myProducts &&
+								myProducts.map(product => (
+									<TableRow
+										key={product._id}
+										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 									>
-										Update
-									</Button>
-								</TableCell>
-								<TableCell align="center">
-									<Button size="small" variant="contained" color="error">
-										Delete
-									</Button>
-								</TableCell>
-							</TableRow>
+										<TableCell component="th" scope="row">
+											1
+										</TableCell>
+										<TableCell align="center">{product.name}</TableCell>
+										<TableCell align="center">{product?.upvote || 0}</TableCell>
+										<TableCell align="center">
+											{product.status === 'pending' ? (
+												<Badge
+													badgeContent={product.status.toLocaleUpperCase()}
+													color="warning"
+												></Badge>
+											) : product.status === 'accepted' ? (
+												<Badge
+													badgeContent={product.status.toLocaleUpperCase()}
+													color="success"
+												></Badge>
+											) : (
+												<Badge
+													badgeContent={product.status.toLocaleUpperCase()}
+													color="error"
+												></Badge>
+											)}
+										</TableCell>
+										<TableCell align="center">
+											<Button
+												onClick={handleOpen}
+												size="small"
+												variant="contained"
+												color="success"
+											>
+												Update
+											</Button>
+										</TableCell>
+										<TableCell align="center">
+											<Button
+												onClick={() => handleAlertClickOpen()}
+												size="small"
+												variant="contained"
+												color="error"
+											>
+												Delete
+											</Button>
+										</TableCell>
+										<UpdateProductModal
+											handleClose={handleClose}
+											open={open}
+											refetch={refetch}
+											product={product}
+										/>
+										<DeleteConfirmationDialog
+											handleClose={handleAlertClose}
+											handleDelete={handleDelete}
+											open={alertOpen}
+											id={product._id}
+										/>
+									</TableRow>
+								))}
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<UpdateProductModal handleClose={handleClose} open={open} />
 			</Container>
 		</div>
 	);

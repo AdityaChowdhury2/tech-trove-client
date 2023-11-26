@@ -1,9 +1,22 @@
-import { Box, Button, Container, Grid, Stack, TextField } from '@mui/material';
+import {
+	Box,
+	Button,
+	Container,
+	Grid,
+	Stack,
+	TextField,
+	Typography,
+} from '@mui/material';
 import Heading from '../../../components/Shared/Heading';
 import useAuth from '../../../hooks/useAuth';
 import { useState } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input';
 import './AddProduct.css';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import useGetSubscription from '../../../hooks/useSubscription';
+import useMyProducts from '../../../hooks/useMyProducts';
 
 const KeyCodes = {
 	comma: 188,
@@ -13,6 +26,11 @@ const KeyCodes = {
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 const AddProduct = () => {
+	const axiosSecure = useAxiosSecure();
+	const navigate = useNavigate();
+	const { isSubscribed } = useGetSubscription();
+	const { myProducts } = useMyProducts();
+
 	const { user } = useAuth();
 	const [tags, setTags] = useState([]);
 	const handleDelete = i => {
@@ -27,6 +45,43 @@ const AddProduct = () => {
 		console.log('The tag at index ' + index + ' was clicked');
 	};
 
+	const handleAddProduct = async e => {
+		e.preventDefault();
+		const formData = new FormData(e.target);
+		const form = {};
+		for (const data of formData.entries()) {
+			form[data[0]] = data[1];
+		}
+		const productData = {
+			name: form.productName,
+			image: form.productImage,
+			pageUrl: form.productPageLink,
+			description: form.description,
+			tags,
+		};
+		const owner = {
+			name: form.owner_name,
+			email: form.owner_email,
+			image: form.owner_image,
+		};
+		const product = { ...productData, owner };
+		const toastId = toast.loading('Adding Product...');
+		try {
+			const response = await axiosSecure.post(
+				'/api/v1/products/add-product',
+				product
+			);
+			if (response.data.insertedId) {
+				toast.success('Product added successfully', { id: toastId });
+			}
+			e.target.reset();
+			setTags([]);
+			navigate('/dashboard/my-products');
+		} catch (error) {
+			toast.error(error.message, { id: toastId });
+		}
+	};
+
 	return (
 		<div style={{ minWidth: ' 300px' }}>
 			<Box height={40} mb={5} />
@@ -34,8 +89,22 @@ const AddProduct = () => {
 				subHeading={'Streamlined Product Addition Process'}
 				title={'Add New Product'}
 			/>
+			{!isSubscribed && !!myProducts.length && (
+				<Typography
+					variant="body2"
+					component={'p'}
+					color={'red'}
+					textAlign={'center'}
+					sx={{
+						fontSize: '12px',
+						marginTop: '10px',
+					}}
+				>
+					Please Subscribe to add more products
+				</Typography>
+			)}
 			<Container>
-				<Box component={'form'} sx={{ mt: 5 }}>
+				<Box component={'form'} sx={{ mt: 5 }} onSubmit={handleAddProduct}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
 							<TextField
@@ -144,7 +213,11 @@ const AddProduct = () => {
 						</Grid>
 					</Grid>
 					<Stack justifyContent={'center'} marginTop={2}>
-						<Button type="submit" variant="contained">
+						<Button
+							disabled={!isSubscribed && !!myProducts.length}
+							type="submit"
+							variant="contained"
+						>
 							Add Product
 						</Button>
 					</Stack>

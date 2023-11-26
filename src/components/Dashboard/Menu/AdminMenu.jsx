@@ -2,7 +2,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import GroupIcon from '@mui/icons-material/Group';
+import SellIcon from '@mui/icons-material/Sell';
+
 import { NavLink } from 'react-router-dom';
 
 const AdminMenu = () => {
@@ -27,7 +30,7 @@ const AdminMenu = () => {
 								justifyContent: 'center',
 							}}
 						>
-							<InboxIcon />
+							<QueryStatsIcon />
 						</ListItemIcon>
 						<ListItemText
 							primary={'Statistics'}
@@ -55,7 +58,7 @@ const AdminMenu = () => {
 								justifyContent: 'center',
 							}}
 						>
-							<InboxIcon />
+							<GroupIcon />
 						</ListItemIcon>
 						<ListItemText
 							primary={'Manage Users'}
@@ -83,7 +86,7 @@ const AdminMenu = () => {
 								justifyContent: 'center',
 							}}
 						>
-							<InboxIcon />
+							<SellIcon />
 						</ListItemIcon>
 						<ListItemText
 							primary={'Manage Coupons'}

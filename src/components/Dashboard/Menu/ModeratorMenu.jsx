@@ -2,7 +2,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import FlagIcon from '@mui/icons-material/Flag';
+import QueueIcon from '@mui/icons-material/Queue';
 import { NavLink } from 'react-router-dom';
 
 const ModeratorMenu = () => {
@@ -27,7 +28,7 @@ const ModeratorMenu = () => {
 								justifyContent: 'center',
 							}}
 						>
-							<InboxIcon />
+							<QueueIcon />
 						</ListItemIcon>
 						<ListItemText
 							primary={'Product Review'}
@@ -55,7 +56,7 @@ const ModeratorMenu = () => {
 								justifyContent: 'center',
 							}}
 						>
-							<InboxIcon />
+							<FlagIcon />
 						</ListItemIcon>
 						<ListItemText
 							primary={'Reported Product'}
