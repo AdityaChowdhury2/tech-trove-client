@@ -11,8 +11,46 @@ import {
 	TableRow,
 } from '@mui/material';
 import Heading from '../../../components/Shared/Heading';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ProductReview = () => {
+	const axiosSecure = useAxiosSecure();
+	const { data: products, refetch } = useQuery({
+		queryKey: ['allProducts'],
+		queryFn: async () => {
+			const response = await axiosSecure('/api/v1/moderator/products');
+			return response.data;
+		},
+	});
+	const { mutate } = useMutation({
+		mutationFn: async data => {
+			const response = await axiosSecure.patch(
+				`/api/v1/moderator/products/${data.id}`,
+				data
+			);
+			return response.data;
+		},
+		onSuccess: () => {
+			toast.success('Product updated successfully');
+			refetch();
+		},
+	});
+
+	const handleFeaturedButton = id => {
+		mutate({ id, featured: true });
+	};
+	const handleAcceptButton = id => {
+		mutate({ id, status: 'accepted' });
+	};
+	const handleRejectButton = id => {
+		mutate({ id, status: 'rejected' });
+	};
+
+	const navigate = useNavigate();
+
 	return (
 		<div>
 			<Box height={40} />
@@ -62,34 +100,74 @@ const ProductReview = () => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							<TableRow
-								sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-							>
-								<TableCell component="th" scope="row">
-									1
-								</TableCell>
-								<TableCell align="center">Omuk lsdf</TableCell>
-								<TableCell align="center">
-									<Button size="small" variant="contained" color="success">
-										View Details
-									</Button>
-								</TableCell>
-								<TableCell align="center">
-									<Button size="small" variant="contained" color="success">
-										Make Featured
-									</Button>
-								</TableCell>
-								<TableCell align="center">
-									<Button size="small" variant="contained" color="success">
-										Accept
-									</Button>
-								</TableCell>
-								<TableCell align="center">
-									<Button size="small" variant="contained" color="error">
-										Reject
-									</Button>
-								</TableCell>
-							</TableRow>
+							{products &&
+								products.map(product => (
+									<TableRow
+										key={product._id}
+										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+									>
+										<TableCell component="th" scope="row">
+											1
+										</TableCell>
+										<TableCell align="center">{product.name}</TableCell>
+										<TableCell align="center">
+											<Button
+												onClick={() => navigate(`/products/${product._id}`)}
+												size="small"
+												variant="contained"
+												color="primary"
+												sx={{ fontSize: { xs: 8, md: 14 } }}
+											>
+												View Details
+											</Button>
+										</TableCell>
+										<TableCell align="center">
+											<Button
+												disabled={product?.featured}
+												onClick={() => {
+													handleFeaturedButton(product._id);
+												}}
+												size="small"
+												variant="contained"
+												color="warning"
+												sx={{
+													fontSize: { xs: 8, md: 14 },
+													color: 'black',
+												}}
+											>
+												Make Featured
+											</Button>
+										</TableCell>
+										<TableCell align="center">
+											<Button
+												disabled={product?.status === 'accepted'}
+												onClick={() => {
+													handleAcceptButton(product._id);
+												}}
+												size="small"
+												variant="contained"
+												color="success"
+												sx={{ fontSize: { xs: 8, md: 14 } }}
+											>
+												Accept
+											</Button>
+										</TableCell>
+										<TableCell align="center">
+											<Button
+												disabled={product?.status === 'rejected'}
+												onClick={() => {
+													handleRejectButton(product._id);
+												}}
+												size="small"
+												variant="contained"
+												color="error"
+												sx={{ fontSize: { xs: 8, md: 14 } }}
+											>
+												Reject
+											</Button>
+										</TableCell>
+									</TableRow>
+								))}
 						</TableBody>
 					</Table>
 				</TableContainer>

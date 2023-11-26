@@ -3,6 +3,7 @@ import {
 	Button,
 	Container,
 	Grid,
+	Input,
 	Stack,
 	TextField,
 	Typography,
@@ -17,6 +18,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import useGetSubscription from '../../../hooks/useSubscription';
 import useMyProducts from '../../../hooks/useMyProducts';
+import { uploadImage } from '../../../api/uploadImage';
 
 const KeyCodes = {
 	comma: 188,
@@ -64,6 +66,9 @@ const AddProduct = () => {
 			email: form.owner_email,
 			image: form.owner_image,
 		};
+
+		productData.image = await uploadImage(formData);
+
 		const product = { ...productData, owner };
 		const toastId = toast.loading('Adding Product...');
 		try {
@@ -106,7 +111,7 @@ const AddProduct = () => {
 			<Container>
 				<Box component={'form'} sx={{ mt: 5 }} onSubmit={handleAddProduct}>
 					<Grid container spacing={2}>
-						<Grid item xs={12} md={6}>
+						<Grid item xs={12}>
 							<TextField
 								fullWidth
 								required
@@ -115,13 +120,13 @@ const AddProduct = () => {
 								label="Product Name"
 							/>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<TextField
-								fullWidth
+						<Grid item xs={12}>
+							<Input
+								type="file"
+								color="primary"
 								required
-								type="text"
-								name="productImage"
-								label="Product Image Url"
+								inputProps={{ accept: 'image/*' }}
+								name="image"
 							/>
 						</Grid>
 						<Grid item xs={12}>
