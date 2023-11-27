@@ -38,7 +38,7 @@ const AllCoupon = ({
 			{
 				loading: 'Loading',
 				success: () => `Successfully deleted`,
-				error: () => `This just happened:`,
+				error: () => `An error has occurred`,
 			},
 			{
 				success: {

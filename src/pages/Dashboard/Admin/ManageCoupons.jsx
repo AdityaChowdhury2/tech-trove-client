@@ -7,18 +7,13 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import AllCoupon from '../../../components/Dashboard/Admin/AllCoupon';
 import { useState } from 'react';
 import UpdateCouponForm from '../../../components/Dashboard/Admin/UpdateCouponForm';
+import useCoupons from '../../../hooks/useCoupons';
 
 const ManageCoupons = () => {
 	const [isUpdateForm, setIsUpdateForm] = useState(false);
 	const [selectedCoupon, setSelectedCoupon] = useState({});
 	const axiosSecure = useAxiosSecure();
-	const { data: coupons, refetch } = useQuery({
-		queryKey: ['coupons'],
-		queryFn: async () => {
-			const response = await axiosSecure('/api/v1/coupons');
-			return response.data;
-		},
-	});
+	const { coupons, refetch } = useCoupons();
 	const handleUpdateForm = () => {
 		setIsUpdateForm(true);
 	};
