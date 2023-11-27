@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import useAuth from '../../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import toast from 'react-hot-toast';
 import useGetSubscription from '../../../hooks/useSubscription';
 import TextField from '@mui/material/TextField';
@@ -58,12 +57,10 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 			}
 		}
 	};
-	// TODO: Use Axios Secure instead of axios public
-	const axiosPublic = useAxiosPublic();
 
 	const { mutate: updateUserInfo } = useMutation({
 		mutationFn: async data => {
-			const res = await axiosPublic.put(`/api/v1/users/${user?.email}`, data);
+			const res = await axiosSecure.put(`/api/v1/users/${user?.email}`, data);
 			return res.data;
 		},
 		onSuccess: () => {
@@ -72,7 +69,7 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 	});
 
 	useEffect(() => {
-		axiosPublic
+		axiosSecure
 			.post('/api/v1/create-payment-intent', {
 				price,
 			})
@@ -129,7 +126,7 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 			};
 			try {
 				// TODO: save payment info to the database
-				const response = axiosPublic.post('/api/v1/payment', paymentInfo);
+				const response = axiosSecure.post('/api/v1/payment', paymentInfo);
 				console.log(response.data);
 				// TODO: update user info subscribed true
 				updateUserInfo({ subscribed: true });

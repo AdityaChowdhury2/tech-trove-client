@@ -12,13 +12,13 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const Navbar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
-	3;
+	const navigate = useNavigate();
 	const { user, logout } = useAuth();
 
 	const handleOpenNavMenu = event => {
@@ -286,17 +286,19 @@ const Navbar = () => {
 										</Typography>
 									</MenuItem>
 									<Divider />
-									<MenuItem>
-										<Link to={'/dashboard'} style={{ textDecoration: 'none' }}>
-											<Typography
-												component={'p'}
-												variant="p"
-												textAlign="center"
-												color={'primary.main'}
-											>
-												Dashboard
-											</Typography>
-										</Link>
+									<MenuItem
+										onClick={() => {
+											navigate('/dashboard');
+										}}
+									>
+										<Typography
+											component={'p'}
+											variant="p"
+											textAlign="center"
+											color={'primary.main'}
+										>
+											Dashboard
+										</Typography>
 									</MenuItem>
 									<MenuItem onClick={() => logout()}>
 										<Typography textAlign="center" color={'primary.main'}>
