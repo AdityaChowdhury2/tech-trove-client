@@ -8,16 +8,16 @@ const useUserRole = () => {
 
 	const {
 		data = {},
-		refetch,
 		isLoading,
+		refetch,
 	} = useQuery({
 		queryKey: ['user', user?.email],
-		enabled: !loading && !!user.email,
 		queryFn: async () => {
 			const response = await axiosPublic(`/api/v1/user/${user.email}`);
 			console.log('response from user role ', response.data);
 			return response.data;
 		},
+		enabled: !loading && !!user.email,
 	});
 	return { role: data.role, refetch, isLoading };
 };

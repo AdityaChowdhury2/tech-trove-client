@@ -20,7 +20,6 @@ const UserProfile = () => {
 	const handleClose = () => setOpen(false);
 	const handleSubmit = () => {};
 	const { isSubscribed } = useGetSubscription();
-	console.log(isSubscribed);
 	return (
 		<Container>
 			<Box height={40} />
@@ -68,7 +67,7 @@ const UserProfile = () => {
 					{!isSubscribed && (
 						<div>
 							<Button size="small" onClick={handleOpen}>
-								Subscribe
+								Membership Subscribe
 							</Button>
 						</div>
 					)}

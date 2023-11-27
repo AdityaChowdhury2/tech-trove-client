@@ -102,13 +102,13 @@ const MyProducts = () => {
 						</TableHead>
 						<TableBody>
 							{myProducts &&
-								myProducts.map(product => (
+								myProducts.map((product, idx) => (
 									<TableRow
 										key={product._id}
 										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 									>
 										<TableCell component="th" scope="row">
-											1
+											{idx + 1}
 										</TableCell>
 										<TableCell align="center">{product.name}</TableCell>
 										<TableCell align="center">{product?.upvote || 0}</TableCell>

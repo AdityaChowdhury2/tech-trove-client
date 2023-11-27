@@ -25,26 +25,22 @@ const AuthProvider = ({ children }) => {
 		const unSubscribe = onAuthStateChanged(auth, currentUser => {
 			const loggedUser = currentUser?.email;
 			console.log('loggedUser', loggedUser);
-			setUser(currentUser);
+
 			if (loggedUser) {
 				axiosPublic
 					.post('/api/v1/create-token', { email: loggedUser })
 					.then(res => {
-						console.log(res.data);
+						setUser(currentUser);
 						setLoading(false);
-						if (res.data.token) {
-							localStorage.setItem('access_token', res.data.token);
-							console.log('token stored');
-							console.log(localStorage.getItem('access_token'));
-						}
+						console.log(res.data);
 					});
 			} else {
-				// localStorage.removeItem('access_token');
 				axiosPublic
 					.post('/api/v1/delete-token')
 					.then(res => {
 						console.log(res.data);
 						setLoading(false);
+						setUser(currentUser);
 					})
 					.catch(err => {
 						console.log(err);

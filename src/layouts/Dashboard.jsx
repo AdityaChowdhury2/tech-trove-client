@@ -18,7 +18,6 @@ import AdminMenu from '../components/Dashboard/Menu/AdminMenu';
 import ModeratorMenu from '../components/Dashboard/Menu/ModeratorMenu';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import useUserRole from '../hooks/useUserRole';
-import useAuth from '../hooks/useAuth';
 
 const drawerWidth = 240;
 
@@ -72,7 +71,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
 	const open = useAppStore(state => state.dopen);
 	const { role, isLoading } = useUserRole();
-
+	console.log(isLoading);
 	return (
 		<div>
 			<DashboardNavbar />
