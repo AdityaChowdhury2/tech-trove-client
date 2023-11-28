@@ -1,39 +1,69 @@
-import { Box, Container } from '@mui/material';
+import { Box, Button, Container, Grid, Stack } from '@mui/material';
 import SectionHeader from '../Shared/SectionHeader';
 import ProductCard from './ProductCard';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 const trendingBackground = 'https://i.ibb.co/1JDNQNT/6b1737cf4d.jpg';
 
 const Trending = () => {
+	const axiosSecure = useAxiosSecure();
+	const { data: products, refetch: refetchTrending } = useQuery({
+		queryKey: ['trendingProduct'],
+		queryFn: async () => {
+			const response = await axiosSecure(
+				'/api/v1/products?sortBy=upvote_count&sortingOrder=desc'
+			);
+			return response.data.result;
+		},
+	});
 	return (
-		<section>
+		<Box
+			component={'section'}
+			sx={{
+				paddingTop: 5,
+				paddingBottom: 5,
+				paddingX: 0,
+			}}
+		>
+			<SectionHeader
+				title={`What's Trending in Tech`}
+				subTitle={'The newest, hottest tech products ranked by our community'}
+			/>
 			<Box
 				sx={{
-					paddingTop: 5,
-					paddingBottom: 5,
-					paddingX: 0,
+					backgroundImage: `url(${trendingBackground})
+                        , linear-gradient(to bottom, #bde0fe01,#a2d2ff85)`,
+					backgroundPosition: 'center',
+					backgroundRepeat: 'no-repeat',
+					backgroundSize: 'cover',
+					paddingY: { xs: '1rem', md: '2rem' },
+					backgroundBlendMode: 'color-dodge',
+					mt: 5,
+					backgroundAttachment: 'fixed',
 				}}
 			>
-				<SectionHeader
-					title={`What's Trending in Tech`}
-					subTitle={'The newest, hottest tech products ranked by our community'}
-				/>
-				<Box
-					sx={{
-						backgroundImage: `url(${trendingBackground})
-                        , linear-gradient(to bottom, #bde0fe01,#a2d2ff85)`,
-						backgroundPosition: 'center',
-						backgroundRepeat: 'no-repeat',
-						backgroundSize: 'cover',
-						height: '600px',
-						backgroundBlendMode: 'color-dodge',
-						mt: 5,
-						backgroundAttachment: 'fixed',
-					}}
-				>
-					<Container>{/* <ProductCard product={} refetch={}/> */}</Container>
-				</Box>
+				<Container>
+					<Grid container>
+						{products &&
+							products.map(product => (
+								<Grid key={product._id} item xs={12} md={6} lg={4}>
+									<ProductCard product={product} refetch={refetchTrending} />
+								</Grid>
+							))}
+					</Grid>
+					<Stack alignItems={'center'}>
+						<Button
+							variant="contained"
+							sx={{
+								mt: 5,
+							}}
+						>
+							SHOW ALL
+						</Button>
+					</Stack>
+				</Container>
 			</Box>
-		</section>
+		</Box>
 	);
 };
 

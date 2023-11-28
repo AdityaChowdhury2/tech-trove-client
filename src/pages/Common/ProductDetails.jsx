@@ -101,6 +101,12 @@ const ProductDetails = () => {
 		}
 	};
 	const { role } = useUserRole();
+	// TODO:
+	// TASK upvote button functionility
+	// TASK add external link
+	//
+
+	// owner can not post owner can not report
 
 	return (
 		<Grid>
@@ -121,9 +127,6 @@ const ProductDetails = () => {
 							height: { xs: '30vh', sm: '40vh', md: '50vh', lg: '60vh' },
 							overflow: 'hidden',
 							borderRadius: '10px',
-							// backgroundImage: `url(${product.image})`,
-							// backgroundRepeat: 'no-repeat',
-							// backgroundPosition: 'center',
 						}}
 					>
 						<img
