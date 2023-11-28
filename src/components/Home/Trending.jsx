@@ -3,10 +3,12 @@ import SectionHeader from '../Shared/SectionHeader';
 import ProductCard from './ProductCard';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router-dom';
 const trendingBackground = 'https://i.ibb.co/1JDNQNT/6b1737cf4d.jpg';
 
 const Trending = () => {
 	const axiosSecure = useAxiosSecure();
+	const navigate = useNavigate();
 	const { data: products, refetch: refetchTrending } = useQuery({
 		queryKey: ['trendingProduct'],
 		queryFn: async () => {
@@ -53,6 +55,7 @@ const Trending = () => {
 					</Grid>
 					<Stack alignItems={'center'}>
 						<Button
+							onClick={() => navigate('products')}
 							variant="contained"
 							sx={{
 								mt: 5,
