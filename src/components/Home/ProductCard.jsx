@@ -10,14 +10,17 @@ import { BiUpvote } from 'react-icons/bi';
 import { formatDistance } from 'date-fns';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import { useState } from 'react';
+// import { useState } from 'react';
 import useUserRole from '../../hooks/useUserRole';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
 
-const ProductCard = ({ product }) => {
-	const { user } = useAuth();
+const ProductCard = ({ product, refetch }) => {
+	const { user, loading } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
-	// const [userRole, setUserRole] = useState();
+	const axiosSecure = useAxiosSecure();
+
 	const { role } = useUserRole();
 	console.log(role);
 
@@ -27,13 +30,50 @@ const ProductCard = ({ product }) => {
 	};
 	const isOwner = user?.email === product.owner.email;
 	console.log('isOwner ', isOwner);
+	const {
+		data: upVote,
+		refetch: refetchUpVote,
+		isLoading,
+	} = useQuery({
+		queryKey: ['upVote', product],
+		enabled: !!user && !loading,
+		queryFn: async () => {
+			const response = await axiosSecure(
+				`/api/v1/votes?productId=${product._id}`
+			);
+			return response.data;
+		},
+	});
 
-	// handle onclick events in upvote button
+	// handle onclick events in upVote button
 	// TODO: patch {upvote: true} in "/api/v1/user/products/:productId"
 	// TODO: post('/api/v1/votes') {productId: product.id,email}
+	const handleUpVote = async () => {
+		if (!user) {
+			navigate('/login', {
+				state: { from: location.pathname },
+			});
+		} else {
+			const upVoteData = {
+				productId: product._id,
+				email: user.email,
+			};
+			const response = await axiosSecure.put('/api/v1/votes', upVoteData);
+			if (response.data.upsertedId) {
+				axiosSecure
+					.patch(`/api/v1/user/products/${upVoteData.productId}`, {
+						upVote: true,
+					})
+					.then(() => {
+						refetch();
+						refetchUpVote();
+					});
+			}
+		}
+	};
 
 	return (
-		<Card sx={{ paddingY: 2 }}>
+		<Card sx={{ paddingY: 2, borderRadius: '10px' }}>
 			<CardHeader
 				sx={{ paddingX: 3 }}
 				disableTypography
@@ -97,18 +137,17 @@ const ProductCard = ({ product }) => {
 							},
 						}}
 						aria-label="upvote"
-						disabled={role === 'moderator' || role === 'admin' || isOwner}
-						onClick={() => {
-							console.log(user);
-							if (!user) {
-								navigate('/login', {
-									state: { from: location.pathname },
-								});
-							}
-						}}
+						disabled={
+							role === 'moderator' ||
+							role === 'admin' ||
+							isOwner ||
+							!!upVote ||
+							isLoading
+						}
+						onClick={handleUpVote}
 					>
 						<BiUpvote size={16} />
-						<Typography fontSize={14}>{product.upvote_count || 5}</Typography>
+						<Typography fontSize={14}>{product.upvote_count}</Typography>
 					</IconButton>
 				</CardActions>
 			</div>
@@ -118,6 +157,7 @@ const ProductCard = ({ product }) => {
 
 ProductCard.propTypes = {
 	product: PropTypes.object,
+	refetch: PropTypes.func,
 };
 
 export default ProductCard;

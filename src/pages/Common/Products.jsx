@@ -55,7 +55,11 @@ const Products = () => {
 	const axiosPublic = useAxiosPublic();
 	const [searchText, setSearchText] = useState('');
 	const [currentPage, setCurrentPage] = useState(0);
-	const { data = {}, isLoading } = useQuery({
+	const {
+		data = {},
+		isLoading,
+		refetch: refetchAllProducts,
+	} = useQuery({
 		queryKey: ['products', currentPage, searchText],
 		queryFn: async () => {
 			const response = await axiosPublic(
@@ -100,7 +104,7 @@ const Products = () => {
 					{products &&
 						products.map(product => (
 							<Grid key={product._id} item xs={12} md={6} xl={3}>
-								<ProductCard product={product} />
+								<ProductCard product={product} refetch={refetchAllProducts} />
 							</Grid>
 						))}
 				</Grid>

@@ -10,8 +10,12 @@ import Loading from '../Shared/Loading';
 
 const Featured = () => {
 	const axiosPublic = useAxiosPublic();
-	const { data: featuredProducts, isLoading } = useQuery({
-		queryKey: ['featuredProduct'],
+	const {
+		data: featuredProducts,
+		isLoading,
+		refetch: refetchFeaturedProducts,
+	} = useQuery({
+		queryKey: ['featuredProducts'],
 		queryFn: async () => {
 			const response = await axiosPublic(
 				'/api/v1/products?featured=true&sortBy=timestamp&sortOrder=desc'
@@ -23,16 +27,16 @@ const Featured = () => {
 	return (
 		<Box
 			sx={{
-				backgroundImage: 'linear-gradient(to bottom, #bee7ef,#7ccede)',
+				backgroundImage: 'linear-gradient(to bottom, #bee7ef15,#7ccede88)',
 				paddingTop: 5,
 				paddingBottom: 5,
 			}}
 		>
 			<Container maxWidth={'lg'} sx={{ padding: '0px' }}>
 				<SectionHeader
-					title={'Featured Products'}
+					title={'Hot Off the Press'}
 					subTitle={
-						'Discover our curated collection of featured products that stand out for their exceptional quality and innovation.'
+						'We bring you an exclusive sneak-peak at the latest product drops before anyone else'
 					}
 				/>
 				{isLoading ? (
@@ -49,7 +53,10 @@ const Featured = () => {
 						{featuredProducts &&
 							featuredProducts.map(featuredProduct => (
 								<Grid key={featuredProduct._id} item xs={12} md={6} xl={3}>
-									<ProductCard product={featuredProduct} />
+									<ProductCard
+										product={featuredProduct}
+										refetch={refetchFeaturedProducts}
+									/>
 								</Grid>
 							))}
 					</Grid>
