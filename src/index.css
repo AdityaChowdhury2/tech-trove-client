@@ -1,4 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Cantarell:wght@400;700&family=Fjalla+One&display=swap');
 *{
     padding: 0;
     margin: 0;
+}
+
+h4{
+    font-family: 'Fjalla One, sans-serif'
 }

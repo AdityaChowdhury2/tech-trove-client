@@ -12,7 +12,7 @@ const LazyBackGroundImageLoader = ({ img, style, children, alt }) => {
 	return (
 		<div
 			style={{
-				backgroundImage: `url(${img}),  linear-gradient(to right, #0267c1, rgba(255, 255, 255, 0))`,
+				backgroundImage: `url(${img}), linear-gradient(to right, #0c1d23, #176B87)`,
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: 'center center',
 				backgroundSize: 'cover',
@@ -32,7 +32,7 @@ const LazyBackGroundImageLoader = ({ img, style, children, alt }) => {
 					position: 'absolute',
 					top: '0',
 					left: '0',
-					height: '120%',
+					height: '150%',
 					width: '100%',
 					display: `${loaded && 'none'}`,
 				}}

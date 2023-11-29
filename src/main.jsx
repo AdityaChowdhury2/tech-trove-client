@@ -8,18 +8,21 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AuthProvider from './providers/AuthProvider.jsx';
 
 import { Toaster } from 'react-hot-toast';
+import { HelmetProvider } from 'react-helmet-async';
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
-		<SiteTheme>
-			<AuthProvider>
-				<QueryClientProvider client={queryClient}>
-					<RouterProvider router={Routes} />
-					<Toaster />
-				</QueryClientProvider>
-			</AuthProvider>
-		</SiteTheme>
+		<HelmetProvider>
+			<SiteTheme>
+				<AuthProvider>
+					<QueryClientProvider client={queryClient}>
+						<RouterProvider router={Routes} />
+						<Toaster />
+					</QueryClientProvider>
+				</AuthProvider>
+			</SiteTheme>
+		</HelmetProvider>
 	</React.StrictMode>
 );

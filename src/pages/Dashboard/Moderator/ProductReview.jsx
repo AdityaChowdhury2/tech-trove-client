@@ -15,6 +15,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 
 const ProductReview = () => {
 	const axiosSecure = useAxiosSecure();
@@ -53,6 +54,9 @@ const ProductReview = () => {
 
 	return (
 		<div>
+			<Helmet>
+				<title>Moderator | Product Review</title>
+			</Helmet>
 			<Box height={40} />
 			<Heading
 				title={'Product Review'}
@@ -101,13 +105,13 @@ const ProductReview = () => {
 						</TableHead>
 						<TableBody>
 							{products &&
-								products.map(product => (
+								products.map((product, idx) => (
 									<TableRow
 										key={product._id}
 										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 									>
 										<TableCell component="th" scope="row">
-											1
+											{idx + 1}
 										</TableCell>
 										<TableCell align="center">{product.name}</TableCell>
 										<TableCell align="center">

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import ProductCard from '../../components/Home/ProductCard';
 import Loading from '../../components/Shared/Loading';
 import SectionHeader from '../../components/Shared/SectionHeader';
+import { Helmet } from 'react-helmet-async';
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -73,6 +74,9 @@ const Products = () => {
 
 	return (
 		<Box>
+			<Helmet>
+				<title>TechTrove | Home</title>
+			</Helmet>
 			<SectionHeader
 				subTitle={'Find the best tech products here'}
 				title={'All products'}

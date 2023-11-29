@@ -3,13 +3,26 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 const theme = createTheme({
 	palette: {
 		primary: {
-			main: '#258193',
-			50: '#bee7ef',
-			100: '#7ccede',
-			800: '#1D6472',
+			main: '#36a4d4',
 		},
 		warning: {
 			main: '#ffb703',
+		},
+	},
+	typography: {
+		body1: {
+			fontFamily: 'Cantarell',
+		},
+		body2: {
+			fontFamily: 'Cantarell',
+		},
+
+		h1: { fontFamily: 'Fjalla One, sans-serif' },
+		h2: { fontFamily: 'Fjalla One, sans-serif' },
+		h3: { fontFamily: 'Fjalla One, sans-serif' },
+		h4: { fontFamily: 'Fjalla One, sans-serif' },
+		h5: {
+			fontFamily: 'Fjalla One, sans-serif',
 		},
 	},
 });

@@ -21,8 +21,8 @@ const CouponCard = ({ coupon }) => {
 			<div
 				style={{
 					minWidth: 275,
-					background: `linear-gradient(22deg, rgba(44,116,179,1) 0%, rgba(73,103,144,1) 49%, rgba(57,117,189,1) 100%)`,
-					color: 'white',
+					background: `linear-gradient(45deg, #C5FFF8 0%, #5FBDFF 100%)`,
+					color: '#143347',
 					overflow: 'hidden',
 					borderRadius: '15px',
 					borderWidth: '0px',
@@ -72,7 +72,7 @@ const CouponCard = ({ coupon }) => {
 								fontSize={12}
 								paddingY={1}
 								sx={{ cursor: 'pointer' }}
-								color={copied ? 'green' : 'primary'}
+								color={copied ? 'green' : '#143347'}
 								border={'1px solid white'}
 							>
 								{copied ? 'Copied!' : 'Copy Code'}

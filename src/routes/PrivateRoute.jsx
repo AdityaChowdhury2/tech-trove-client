@@ -2,24 +2,12 @@ import PropTypes from 'prop-types';
 import { Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Loading from '../components/Shared/Loading';
-import { Box } from '@mui/material';
 
 const PrivateRoute = ({ children }) => {
 	const location = useLocation();
 	const { user, loading } = useAuth();
 	if (loading) {
-		return (
-			<Box
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					height: '50vh',
-					justifyContent: 'center',
-				}}
-			>
-				<Loading />
-			</Box>
-		);
+		return <Loading />;
 	}
 
 	if (!user) {

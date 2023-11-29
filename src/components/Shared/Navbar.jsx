@@ -12,14 +12,16 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { Link as LinkScroll } from 'react-scroll';
 
 const Navbar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const navigate = useNavigate();
 	const { user, logout } = useAuth();
+	const { pathname } = useLocation();
 
 	const handleOpenNavMenu = event => {
 		setAnchorElNav(event.currentTarget);
@@ -35,7 +37,7 @@ const Navbar = () => {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
-
+	console.log(pathname);
 	return (
 		<Container sx={{ paddingX: { xs: 1 } }}>
 			<AppBar
@@ -46,13 +48,11 @@ const Navbar = () => {
 				<Container maxWidth="xl" sx={{ paddingX: { xs: 1 } }}>
 					<Toolbar disableGutters sx={{ alignItems: 'center' }}>
 						<Typography
-							variant="h6"
-							noWrap
-							component="a"
+							variant="h5"
+							component="h6"
 							sx={{
 								mr: 2,
 								display: { xs: 'none', md: 'flex' },
-								fontFamily: 'monospace',
 								fontWeight: 700,
 								letterSpacing: '.1rem',
 								color: 'primary.main',
@@ -106,47 +106,39 @@ const Navbar = () => {
 										</Typography>
 									</Link>
 								</MenuItem>
-							</Menu>
-							{!user && (
-								<Menu
-									id="menu-appbar"
-									elevation={2}
-									anchorEl={anchorElNav}
-									anchorOrigin={{
-										vertical: 'bottom',
-										horizontal: 'left',
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'left',
-									}}
-									open={Boolean(anchorElNav)}
-									onClose={handleCloseNavMenu}
-									sx={{
-										display: { xs: 'block', md: 'none' },
-									}}
-								>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Link
-											to={'/'}
-											style={{ textDecoration: 'none', color: 'primary.main' }}
+								{/* Scroll */}
+								{pathname === '/' && (
+									<MenuItem>
+										<LinkScroll
+											onClick={handleCloseNavMenu}
+											to="featured"
+											spy={true}
+											smooth={true}
+											duration={500}
 										>
 											<Typography textAlign="center" color={'primary.main'}>
-												Home
+												Featured
 											</Typography>
-										</Link>
+										</LinkScroll>
 									</MenuItem>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Link
-											to={'/products'}
-											style={{ textDecoration: 'none', color: 'primary.main' }}
+								)}
+
+								{pathname === '/' && (
+									<MenuItem>
+										<LinkScroll
+											onClick={handleCloseNavMenu}
+											to="trending"
+											spy={true}
+											smooth={true}
+											duration={500}
 										>
 											<Typography textAlign="center" color={'primary.main'}>
-												Products
+												Trending
 											</Typography>
-										</Link>
+										</LinkScroll>
 									</MenuItem>
+								)}
+								{!user && (
 									<MenuItem onClick={handleCloseNavMenu}>
 										<Link to={'/login'} style={{ textDecoration: 'none' }}>
 											<Typography textAlign="center" color={'primary.main'}>
@@ -154,20 +146,9 @@ const Navbar = () => {
 											</Typography>
 										</Link>
 									</MenuItem>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Link
-											to={'/register'}
-											style={{ textDecoration: 'none', color: 'primary.main' }}
-										>
-											<Typography textAlign="center" color={'primary.main'}>
-												Register
-											</Typography>
-										</Link>
-									</MenuItem>
-								</Menu>
-							)}
+								)}
+							</Menu>
 						</Box>
-
 						<Typography
 							variant="h5"
 							noWrap
@@ -226,6 +207,47 @@ const Navbar = () => {
 									Products
 								</Button>
 							</Link>
+
+							{/* Scroll */}
+							{pathname === '/' && (
+								<>
+									<LinkScroll
+										to="featured"
+										spy={true}
+										smooth={true}
+										duration={500}
+									>
+										<Button
+											sx={{
+												my: 2,
+												color: 'primary.main',
+												display: 'block',
+												fontWeight: 600,
+											}}
+										>
+											Featured
+										</Button>
+									</LinkScroll>
+									<LinkScroll
+										to="trending"
+										spy={true}
+										smooth={true}
+										duration={500}
+									>
+										<Button
+											onClick={handleCloseNavMenu}
+											sx={{
+												my: 2,
+												color: 'primary.main',
+												display: 'block',
+												fontWeight: 600,
+											}}
+										>
+											Trending
+										</Button>
+									</LinkScroll>
+								</>
+							)}
 							{!user && (
 								<>
 									<Link to={'/login'} style={{ textDecoration: 'none' }}>
@@ -238,18 +260,6 @@ const Navbar = () => {
 											}}
 										>
 											Login
-										</Button>
-									</Link>
-									<Link to={'/register'} style={{ textDecoration: 'none' }}>
-										<Button
-											sx={{
-												my: 2,
-												color: 'primary.main',
-												display: 'block',
-												fontWeight: 600,
-											}}
-										>
-											Register
 										</Button>
 									</Link>
 								</>

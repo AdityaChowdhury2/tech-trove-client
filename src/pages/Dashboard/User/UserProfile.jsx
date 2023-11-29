@@ -10,6 +10,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import useGetSubscription from '../../../hooks/useSubscription';
+import { Helmet } from 'react-helmet-async';
 
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_Pk);
 
@@ -22,6 +23,9 @@ const UserProfile = () => {
 	const { isSubscribed } = useGetSubscription();
 	return (
 		<Container>
+			<Helmet>
+				<title>TechTrove | User Profile</title>
+			</Helmet>
 			<Box height={40} />
 			<Card
 				sx={{

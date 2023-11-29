@@ -1,6 +1,5 @@
 import {
 	Box,
-	Button,
 	Container,
 	Grid,
 	Input,
@@ -19,6 +18,9 @@ import { useNavigate } from 'react-router-dom';
 import useGetSubscription from '../../../hooks/useSubscription';
 import useMyProducts from '../../../hooks/useMyProducts';
 import { uploadImage } from '../../../api/uploadImage';
+import { Helmet } from 'react-helmet-async';
+import { useMutation } from '@tanstack/react-query';
+import { LoadingButton } from '@mui/lab';
 
 const KeyCodes = {
 	comma: 188,
@@ -26,7 +28,6 @@ const KeyCodes = {
 };
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
-
 const AddProduct = () => {
 	const axiosSecure = useAxiosSecure();
 	const navigate = useNavigate();
@@ -46,9 +47,24 @@ const AddProduct = () => {
 	const handleTagClick = index => {
 		console.log('The tag at index ' + index + ' was clicked');
 	};
+	const [loading, setLoading] = useState();
+	const { mutateAsync: addProduct } = useMutation({
+		mutationFn: async product => {
+			const response = await axiosSecure.post(
+				'/api/v1/products/add-product',
+				product
+			);
+			return response.data;
+		},
+		onSuccess: () => {
+			setTags([]);
+			navigate('/dashboard/my-products');
+		},
+	});
 
 	const handleAddProduct = async e => {
 		e.preventDefault();
+		setLoading(true);
 		const formData = new FormData(e.target);
 		const form = {};
 		for (const data of formData.entries()) {
@@ -72,23 +88,21 @@ const AddProduct = () => {
 		const product = { ...productData, owner };
 		const toastId = toast.loading('Adding Product...');
 		try {
-			const response = await axiosSecure.post(
-				'/api/v1/products/add-product',
-				product
-			);
-			if (response.data.insertedId) {
+			addProduct(product).then(() => {
 				toast.success('Product added successfully', { id: toastId });
-			}
-			e.target.reset();
-			setTags([]);
-			navigate('/dashboard/my-products');
+				setLoading(false);
+			});
 		} catch (error) {
+			setLoading(false);
 			toast.error(error.message, { id: toastId });
 		}
 	};
 
 	return (
 		<div style={{ minWidth: ' 300px' }}>
+			<Helmet>
+				<title>TechTrove | Add Product</title>
+			</Helmet>
 			<Box height={40} mb={5} />
 			<Heading
 				subHeading={'Streamlined Product Addition Process'}
@@ -218,13 +232,14 @@ const AddProduct = () => {
 						</Grid>
 					</Grid>
 					<Stack justifyContent={'center'} marginTop={2}>
-						<Button
+						<LoadingButton
+							loading={loading}
 							disabled={!isSubscribed && !!myProducts.length}
 							type="submit"
 							variant="contained"
 						>
 							Add Product
-						</Button>
+						</LoadingButton>
 					</Stack>
 				</Box>
 			</Container>

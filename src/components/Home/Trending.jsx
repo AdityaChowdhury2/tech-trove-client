@@ -4,6 +4,7 @@ import ProductCard from './ProductCard';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useNavigate } from 'react-router-dom';
+import { Element } from 'react-scroll';
 const trendingBackground = 'https://i.ibb.co/1JDNQNT/6b1737cf4d.jpg';
 
 const Trending = () => {
@@ -13,14 +14,15 @@ const Trending = () => {
 		queryKey: ['trendingProduct'],
 		queryFn: async () => {
 			const response = await axiosSecure(
-				'/api/v1/products?sortBy=upvote_count&sortingOrder=desc'
+				'api/v1/products?sortBy=upvote_count&sortingOrder=desc'
 			);
 			return response.data.result;
 		},
 	});
 	return (
 		<Box
-			component={'section'}
+			component={Element}
+			name={'trending'}
 			sx={{
 				paddingTop: 5,
 				paddingBottom: 5,
@@ -45,7 +47,7 @@ const Trending = () => {
 				}}
 			>
 				<Container>
-					<Grid container>
+					<Grid container spacing={4}>
 						{products &&
 							products.map(product => (
 								<Grid key={product._id} item xs={12} md={6} lg={4}>
@@ -59,6 +61,7 @@ const Trending = () => {
 							variant="contained"
 							sx={{
 								mt: 5,
+								color: '#f5ecec',
 							}}
 						>
 							SHOW ALL

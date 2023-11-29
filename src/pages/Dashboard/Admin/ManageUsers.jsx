@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Heading from '../../../components/Shared/Heading';
 import { useMutation, useQuery } from '@tanstack/react-query';
-
+import { Helmet } from 'react-helmet-async';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageUsers = () => {
@@ -38,6 +38,9 @@ const ManageUsers = () => {
 
 	return (
 		<div>
+			<Helmet>
+				<title>Admin Dashboard | Manage Users</title>
+			</Helmet>
 			<Box height={40} />
 			<Heading
 				title={'User Management'}

@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input';
 import { Box, Button, Grid, Stack, TextField } from '@mui/material';
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import { useNavigate } from 'react-router-dom';
 
 const KeyCodes = {
 	comma: 188,
@@ -25,10 +24,14 @@ const style = {
 };
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
-const UpdateProductModal = ({ handleClose, open, product, refetch }) => {
+const UpdateProductModal = ({ handleClose, open, refetch, product }) => {
 	const axiosSecure = useAxiosSecure();
-	const navigate = useNavigate();
-	const [tags, setTags] = useState(product.tags);
+
+	const [tags, setTags] = useState([]);
+	useEffect(() => {
+		setTags(product.tags);
+	}, [product?.tags]);
+
 	const handleDelete = i => {
 		setTags(tags.filter((tag, index) => index !== i));
 	};
@@ -40,7 +43,7 @@ const UpdateProductModal = ({ handleClose, open, product, refetch }) => {
 	const handleTagClick = index => {
 		console.log('The tag at index ' + index + ' was clicked');
 	};
-
+	console.log(tags);
 	const handleProductUpdate = async e => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
@@ -64,7 +67,6 @@ const UpdateProductModal = ({ handleClose, open, product, refetch }) => {
 			if (response.data.modifiedCount) {
 				toast.success('Product Updated successfully', { id: toastId });
 				e.target.reset();
-				setTags([]);
 				handleClose();
 				refetch();
 			} else toast.error('Product update failed', { id: toastId });
@@ -74,6 +76,7 @@ const UpdateProductModal = ({ handleClose, open, product, refetch }) => {
 	};
 
 	return (
+		// <></>
 		<Modal
 			open={open}
 			onClose={handleClose}
@@ -138,6 +141,7 @@ const UpdateProductModal = ({ handleClose, open, product, refetch }) => {
 								id="tags"
 								delimiters={delimiters}
 								handleDelete={handleDelete}
+								allowDragDrop={false}
 								handleAddition={handleAddition}
 								handleTagClick={handleTagClick}
 								inputFieldPosition="bottom"

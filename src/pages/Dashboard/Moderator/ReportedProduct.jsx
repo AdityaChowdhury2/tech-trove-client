@@ -18,6 +18,7 @@ import DeleteConfirmationDialog from '../../../components/Modal/DeleteConfirmati
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import useDeleteProduct from '../../../hooks/useDeleteProduct';
+import { Helmet } from 'react-helmet-async';
 
 const ReportedProduct = () => {
 	const navigate = useNavigate();
@@ -59,6 +60,9 @@ const ReportedProduct = () => {
 	};
 	return (
 		<div>
+			<Helmet>
+				<title>Moderator | Reported Product ⚠</title>
+			</Helmet>
 			<Box height={40} />
 			<Heading
 				title={'Reported Product Review'}
@@ -102,13 +106,13 @@ const ReportedProduct = () => {
 						</TableHead>
 						<TableBody>
 							{reports &&
-								reports.map(report => (
+								reports.map((report, idx) => (
 									<TableRow
 										key={report._id}
 										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 									>
 										<TableCell component="th" scope="row">
-											1
+											{idx + 1}
 										</TableCell>
 										<TableCell align="left">{report.name}</TableCell>
 										<TableCell align="left">{report.email}</TableCell>

@@ -10,8 +10,10 @@ import LazyBackGroundImageLoader from '../Shared/LazyBackGroundImageLoader';
 import './Banner.css';
 import 'swiper/css';
 import { Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
+	const navigate = useNavigate();
 	return (
 		<section style={{ marginBottom: '48px' }}>
 			<Swiper
@@ -45,7 +47,7 @@ const Banner = () => {
 							fontSize={'2rem'}
 							fontWeight={'600'}
 							component={'h1'}
-							color={'#00497a'}
+							color={'#f5ecec'}
 						>
 							Discover Trending Tech
 						</Typography>
@@ -56,12 +58,18 @@ const Banner = () => {
 							textAlign={'center'}
 							marginX={'auto'}
 							marginY="1rem"
-							color={'#030712'}
+							color={'#f5ecec'}
 						>
 							Find the hottest and innovative tech products in one place. See
 							what&apos;s trending
 						</Typography>
-						<Button variant="contained">Explore More</Button>
+						<Button
+							onClick={() => navigate('/products')}
+							variant="contained"
+							sx={{ color: '#f5ecec' }}
+						>
+							Explore More
+						</Button>
 					</LazyBackGroundImageLoader>
 				</SwiperSlide>
 				{/* slider 2 */}
@@ -84,7 +92,7 @@ const Banner = () => {
 							fontSize={'2rem'}
 							fontWeight={'600'}
 							component={'h1'}
-							color={'#00497a'}
+							color={'#f5ecec'}
 						>
 							Submit New Products
 						</Typography>
@@ -95,12 +103,18 @@ const Banner = () => {
 							textAlign={'center'}
 							marginX={'auto'}
 							marginY="1rem"
-							color={'#030712'}
+							color={'#f5ecec'}
 						>
 							Be the first to share a hot new product. Submit now and get
 							valuable feedback.
 						</Typography>
-						<Button variant="contained">Explore More</Button>
+						<Button
+							variant="contained"
+							sx={{ color: '#f5ecec' }}
+							onClick={() => navigate('/login')}
+						>
+							Join Now
+						</Button>
 					</LazyBackGroundImageLoader>
 				</SwiperSlide>
 				{/* slider 3 */}
@@ -123,7 +137,7 @@ const Banner = () => {
 							fontSize={'2rem'}
 							fontWeight={'600'}
 							component={'h1'}
-							color={'#00497a'}
+							color={'#f5ecec'}
 						>
 							Explore Innovation with TechTrove
 						</Typography>
@@ -134,12 +148,18 @@ const Banner = () => {
 							textAlign={'center'}
 							marginX={'auto'}
 							marginY="1rem"
-							color={'#030712'}
+							color={'#f5ecec'}
 						>
 							Let the tech discovery community decide the best products. Make
 							your vote count.
 						</Typography>
-						<Button variant="contained">Explore More</Button>
+						<Button
+							onClick={() => navigate('/products')}
+							variant="contained"
+							sx={{ color: '#f5ecec' }}
+						>
+							Explore More
+						</Button>
 					</LazyBackGroundImageLoader>
 				</SwiperSlide>
 			</Swiper>

@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import SocialLogin from '../../../components/Shared/SocialLogin';
 import useAuth from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 
 const Login = () => {
 	const { login } = useAuth();
@@ -36,6 +37,9 @@ const Login = () => {
 	};
 	return (
 		<Container component="main" maxWidth="xs">
+			<Helmet>
+				<title>TechTrove | Login</title>
+			</Helmet>
 			<CssBaseline />
 			<Box
 				sx={{

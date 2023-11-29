@@ -12,6 +12,7 @@ import {
 	TextareaAutosize,
 	Typography,
 } from '@mui/material';
+
 import Loading from '../../components/Shared/Loading';
 import { BiUpvote } from 'react-icons/bi';
 import ReviewCard from '../../components/ReviewCard';
@@ -19,6 +20,8 @@ import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import useUserRole from '../../hooks/useUserRole';
+import { Helmet } from 'react-helmet-async';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 const ProductDetails = () => {
 	// TODO: add functionality for Report and upvote buttons
@@ -101,9 +104,7 @@ const ProductDetails = () => {
 		}
 	};
 	const { role } = useUserRole();
-	// TODO:
-	// TASK upvote button functionility
-	// TASK add external link
+
 	const { data: upVote, refetch: refetchUpVote } = useQuery({
 		queryKey: ['upVote', product._id],
 		enabled: !!user && !loading,
@@ -134,6 +135,9 @@ const ProductDetails = () => {
 
 	return (
 		<Grid>
+			<Helmet>
+				<title>TechTrove | {product?.name || 'ProductDetails'} </title>
+			</Helmet>
 			{isLoading || loading ? (
 				<div
 					style={{
@@ -146,10 +150,10 @@ const ProductDetails = () => {
 			) : (
 				<Container>
 					<Box
+						component={'div'}
 						sx={{
 							width: '100%',
 							height: { xs: '30vh', sm: '40vh', md: '50vh', lg: '60vh' },
-							overflow: 'hidden',
 							borderRadius: '10px',
 						}}
 					>
@@ -158,22 +162,38 @@ const ProductDetails = () => {
 							alt=""
 							style={{
 								width: '100%',
-								objectFit: 'cover',
+								height: 'inherit',
 								borderRadius: '10px',
 							}}
 						/>
 					</Box>
-					<Box>
-						<Typography
-							variant="h2"
-							component={'h2'}
-							fontSize={24}
-							fontWeight={800}
-							sx={{ marginY: '10px' }}
-						>
-							{product.name}
-						</Typography>
-						<Typography variant="body1" component={'p'}>
+					<Box component={'div'}>
+						<Stack direction={'row'} my={4} justifyContent={'space-between'}>
+							<Typography
+								variant="h2"
+								component={'h2'}
+								fontSize={24}
+								fontWeight={800}
+								sx={{ marginY: '10px' }}
+							>
+								{product.name}
+							</Typography>
+							<Button
+								component="a"
+								rel="noopener noreferrer"
+								href={product.pageUrl}
+								target="_blank"
+								variant="outlined"
+								size="small"
+								endIcon={<ArrowOutwardIcon />}
+							>
+								Visit
+							</Button>
+							{/* <IconButton aria-label="delete" disabled color="primary">
+								<ArrowOutwardIcon />
+							</IconButton> */}
+						</Stack>
+						<Typography variant="body1" component={'p'} textAlign={'justify'}>
 							{product.description}
 						</Typography>
 
@@ -193,14 +213,13 @@ const ProductDetails = () => {
 									variant="contained"
 									startIcon={<BiUpvote size={12} />}
 								>
-									Upvote
+									Upvote ({product.upvote_count})
 								</Button>
 								<Button
 									disabled={!!report.length}
 									onClick={handleReport}
 									variant="contained"
 									color="warning"
-									startIcon={<BiUpvote size={12} />}
 								>
 									Report
 								</Button>
@@ -238,7 +257,7 @@ const ProductDetails = () => {
 							}}
 						>
 							<TextField
-								label="Size"
+								label="Username"
 								id="name"
 								name="userName"
 								defaultValue={user.displayName}
@@ -254,7 +273,7 @@ const ProductDetails = () => {
 							}}
 						>
 							<TextField
-								label="Size"
+								label="photoURL"
 								name="photoURL"
 								id="photoURL"
 								sx={{ width: { xs: '100%', md: '300px' } }}
@@ -284,7 +303,7 @@ const ProductDetails = () => {
 						<Box
 							sx={{
 								mt: 2,
-								width: { xs: '100%', md: '360px' },
+								width: { xs: '250px', md: '360px' },
 							}}
 						>
 							{/* <TextareaAutosize /> */}

@@ -12,6 +12,7 @@ import SocialLogin from '../../../components/Shared/SocialLogin';
 import useAuth from '../../../hooks/useAuth';
 import useUpdateUser from '../../../hooks/useUpdateUser';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 
 const Register = () => {
 	const { createUser, updateUser } = useAuth();
@@ -57,6 +58,9 @@ const Register = () => {
 	};
 	return (
 		<Container component="main" maxWidth="xs">
+			<Helmet>
+				<title>TechTrove | Register</title>
+			</Helmet>
 			<CssBaseline />
 			<Box
 				sx={{

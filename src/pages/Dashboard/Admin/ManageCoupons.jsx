@@ -1,8 +1,8 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 import Heading from '../../../components/Shared/Heading';
 import AddCouponForm from '../../../components/Dashboard/Admin/AddCouponForm';
-
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { Helmet } from 'react-helmet-async';
+import { useMutation } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import AllCoupon from '../../../components/Dashboard/Admin/AllCoupon';
 import { useState } from 'react';
@@ -46,6 +46,9 @@ const ManageCoupons = () => {
 
 	return (
 		<div>
+			<Helmet>
+				<title>Admin Dashboard | Manage Coupons</title>
+			</Helmet>
 			<Box height={40} />
 			<Heading
 				title={'Coupon Management'}

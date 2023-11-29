@@ -10,7 +10,6 @@ import { BiUpvote } from 'react-icons/bi';
 import { formatDistance } from 'date-fns';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-// import { useState } from 'react';
 import useUserRole from '../../hooks/useUserRole';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
@@ -20,13 +19,11 @@ const ProductCard = ({ product, refetch }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const axiosSecure = useAxiosSecure();
-
 	const { role } = useUserRole();
 	console.log(role);
 
 	const formatDate = date => {
-		// const today = new Date();
-		return formatDistance(new Date(date), new Date('2023-11-04T12:50:00Z'));
+		return formatDistance(new Date(date), new Date());
 	};
 	const isOwner = user?.email === product.owner.email;
 	console.log('isOwner ', isOwner);
@@ -45,6 +42,7 @@ const ProductCard = ({ product, refetch }) => {
 		},
 	});
 
+	// console.log(upVote);
 	const handleUpVote = async () => {
 		if (!user) {
 			navigate('/login', {
@@ -70,13 +68,20 @@ const ProductCard = ({ product, refetch }) => {
 	};
 
 	return (
-		<Card sx={{ paddingY: 2, borderRadius: '10px' }}>
+		<Card
+			sx={{
+				paddingY: 2,
+				borderRadius: '20px',
+				background: 'linear-gradient(145deg, #e6e6e6, #ffffff)',
+				boxShadow: ' 2px 2px 4px #d9d9d9,  2px 0px 4px #ffffff',
+			}}
+		>
 			<CardHeader
 				sx={{ paddingX: 3 }}
 				disableTypography
 				title={
 					<Typography
-						variant="p"
+						variant={'h3'}
 						component={'h3'}
 						color={'primary.main'}
 						fontSize={{ sm: '24px', lg: '16px' }}
@@ -89,8 +94,25 @@ const ProductCard = ({ product, refetch }) => {
 						</Link>
 					</Typography>
 				}
+				action={
+					location.pathname === '/' ? (
+						<></>
+					) : product.featured ? (
+						<Typography
+							variant={'body1'}
+							component={'p'}
+							color={'primary.main'}
+							fontSize={{ sm: '14px' }}
+							mt={2}
+						>
+							Featured
+						</Typography>
+					) : (
+						<></>
+					)
+				}
 				subheader={
-					<Typography variant="p" component={'p'} fontSize={{ sm: '12px' }}>
+					<Typography variant="body1" component={'p'} fontSize={{ sm: '12px' }}>
 						{(product?.timestamp &&
 							formatDate(product?.timestamp).replace('about', '')) ||
 							0}{' '}
@@ -117,7 +139,6 @@ const ProductCard = ({ product, refetch }) => {
 							<span key={tag.id}>#{tag.text} </span>
 						))}
 					</Typography>
-					{product.status}
 				</CardContent>
 				<CardActions sx={{ gap: 1, paddingX: 3 }}>
 					<IconButton

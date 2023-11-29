@@ -9,52 +9,26 @@ import {
 	TableHead,
 	TableRow,
 	Button,
-	Badge,
 	Typography,
 	Stack,
 } from '@mui/material';
 import Heading from '../../../components/Shared/Heading';
-import { useState } from 'react';
-import UpdateProductModal from '../../../components/Modal/UpdateProductModal/UpdateProductModal';
-import toast from 'react-hot-toast';
-import DeleteConfirmationDialog from '../../../components/Modal/DeleteConfirmationDialog';
 import useMyProducts from '../../../hooks/useMyProducts';
-import useDeleteProduct from '../../../hooks/useDeleteProduct';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import ProductsRow from '../../../components/Dashboard/User/ProductsRow';
 
 const MyProducts = () => {
-	const { mutateAsync: deleteProduct } = useDeleteProduct();
-	const [open, setOpen] = useState(false);
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
 	const navigate = useNavigate();
-	const [alertOpen, setAlertOpen] = useState(false);
 
-	const handleAlertClickOpen = () => {
-		setAlertOpen(true);
-	};
-
-	const handleAlertClose = () => {
-		setAlertOpen(false);
-	};
 	const { myProducts, refetch } = useMyProducts();
 
-	const handleDelete = async productId => {
-		const response = deleteProduct(productId);
-		toast.promise(response, {
-			loading: 'Loading',
-			success: 'Product deleted successfully',
-			error: 'product deletion failed',
-		});
-		await response
-			.then(() => {
-				refetch();
-			})
-			.finally(() => handleAlertClose());
-	};
-
+	console.log('Update modal open ', open);
 	return (
 		<div>
+			<Helmet>
+				<title>TechTrove | My Products</title>
+			</Helmet>
 			<Box height={40} />
 			<Heading
 				title={' My Products'}
@@ -105,68 +79,12 @@ const MyProducts = () => {
 							<TableBody>
 								{myProducts &&
 									myProducts.map((product, idx) => (
-										<TableRow
+										<ProductsRow
+											idx={idx}
+											refetch={refetch}
+											product={product}
 											key={product._id}
-											sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-										>
-											<TableCell component="th" scope="row">
-												{idx + 1}
-											</TableCell>
-											<TableCell align="center">{product.name}</TableCell>
-											<TableCell align="center">
-												{product?.upvote || 0}
-											</TableCell>
-											<TableCell align="center">
-												{product.status === 'pending' ? (
-													<Badge
-														badgeContent={product.status.toLocaleUpperCase()}
-														color="warning"
-													></Badge>
-												) : product.status === 'accepted' ? (
-													<Badge
-														badgeContent={product.status.toLocaleUpperCase()}
-														color="success"
-													></Badge>
-												) : (
-													<Badge
-														badgeContent={product.status.toLocaleUpperCase()}
-														color="error"
-													></Badge>
-												)}
-											</TableCell>
-											<TableCell align="center">
-												<Button
-													onClick={handleOpen}
-													size="small"
-													variant="contained"
-													color="success"
-												>
-													Update
-												</Button>
-											</TableCell>
-											<TableCell align="center">
-												<Button
-													onClick={() => handleAlertClickOpen()}
-													size="small"
-													variant="contained"
-													color="error"
-												>
-													Delete
-												</Button>
-											</TableCell>
-											<UpdateProductModal
-												handleClose={handleClose}
-												open={open}
-												refetch={refetch}
-												product={product}
-											/>
-											<DeleteConfirmationDialog
-												handleClose={handleAlertClose}
-												handleDelete={handleDelete}
-												open={alertOpen}
-												id={product._id}
-											/>
-										</TableRow>
+										/>
 									))}
 							</TableBody>
 						</Table>

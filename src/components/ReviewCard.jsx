@@ -7,21 +7,24 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import { Stack } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import { format } from 'date-fns';
 
 const ReviewCard = ({ review }) => {
 	return (
 		<Card>
 			<CardHeader
 				avatar={
-					<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-						A
+					<Avatar alt={review?.userName} aria-label="recipe">
+						{review?.userName[0]}
 					</Avatar>
 				}
 				title={
 					<Stack direction={'row'} gap={4} alignItems={'center'}>
-						<Typography>{review?.userName}</Typography>
+						<Typography variant="body1" component={'p'}>
+							{review?.userName}
+						</Typography>
 						<Typography>
-							4{' '}
+							{review?.rating}
 							<StarIcon
 								sx={{
 									fontSize: 16,
@@ -31,11 +34,10 @@ const ReviewCard = ({ review }) => {
 						</Typography>
 					</Stack>
 				}
-				subheader="September 14, 2016"
+				subheader={format(new Date(review.timestamp), 'MMMM, dd yyyy')}
 			/>
-
 			<CardContent>
-				<Typography variant="body2" color="text.secondary">
+				<Typography variant="body2" color="">
 					{review.reviewText}
 				</Typography>
 			</CardContent>
