@@ -29,8 +29,8 @@ const SocialLogin = () => {
 	return (
 		<Grid>
 			<hr />
-			<Typography variant="body2" sx={{ textAlign: 'center' }}>
-				Or Sign With
+			<Typography variant="body2" sx={{ textAlign: 'center' }} mt={2}>
+				Or Sign In
 			</Typography>
 			<Button
 				onClick={handleGoogleLogin}

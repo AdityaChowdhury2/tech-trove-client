@@ -104,9 +104,33 @@ const ProductDetails = () => {
 	// TODO:
 	// TASK upvote button functionility
 	// TASK add external link
-	//
-
+	const { data: upVote, refetch: refetchUpVote } = useQuery({
+		queryKey: ['upVote', product._id],
+		enabled: !!user && !loading,
+		queryFn: async () => {
+			const response = await axiosSecure(
+				`/api/v1/votes?productId=${product._id}`
+			);
+			return response.data;
+		},
+	});
 	// owner can not post owner can not report
+	const handleUpVote = async () => {
+		const upVoteData = {
+			productId: product._id,
+			email: user.email,
+		};
+		const response = await axiosSecure.put('/api/v1/votes', upVoteData);
+		if (response.data.upsertedId) {
+			axiosSecure
+				.patch(`/api/v1/user/products/${upVoteData.productId}`, {
+					upVote: true,
+				})
+				.then(() => {
+					refetchUpVote();
+				});
+		}
+	};
 
 	return (
 		<Grid>
@@ -163,7 +187,12 @@ const ProductDetails = () => {
 						</Stack>
 						{!isOwner && role === 'guest' && (
 							<Stack direction={'row'} spacing={5}>
-								<Button variant="contained" startIcon={<BiUpvote size={12} />}>
+								<Button
+									disabled={!!upVote}
+									onClick={handleUpVote}
+									variant="contained"
+									startIcon={<BiUpvote size={12} />}
+								>
 									Upvote
 								</Button>
 								<Button

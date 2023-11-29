@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
@@ -16,4 +17,8 @@ const SectionHeader = ({ title, subTitle }) => {
 	);
 };
 
+SectionHeader.propTypes = {
+	title: PropTypes.string,
+	subTitle: PropTypes.string,
+};
 export default SectionHeader;

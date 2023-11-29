@@ -35,7 +35,7 @@ const ProductCard = ({ product, refetch }) => {
 		refetch: refetchUpVote,
 		isLoading,
 	} = useQuery({
-		queryKey: ['upVote', product],
+		queryKey: ['upVote', product._id],
 		enabled: !!user && !loading,
 		queryFn: async () => {
 			const response = await axiosSecure(
@@ -45,9 +45,6 @@ const ProductCard = ({ product, refetch }) => {
 		},
 	});
 
-	// handle onclick events in upVote button
-	// TODO: patch {upvote: true} in "/api/v1/user/products/:productId"
-	// TODO: post('/api/v1/votes') {productId: product.id,email}
 	const handleUpVote = async () => {
 		if (!user) {
 			navigate('/login', {
@@ -137,13 +134,7 @@ const ProductCard = ({ product, refetch }) => {
 							},
 						}}
 						aria-label="upvote"
-						disabled={
-							role === 'moderator' ||
-							role === 'admin' ||
-							isOwner ||
-							!!upVote ||
-							isLoading
-						}
+						disabled={isOwner || !!upVote || isLoading}
 						onClick={handleUpVote}
 					>
 						<BiUpvote size={16} />
