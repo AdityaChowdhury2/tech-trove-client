@@ -16,7 +16,7 @@ const style = {
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	bgcolor: 'primary.50',
+	bgcolor: 'white.main',
 	border: 'none',
 	boxShadow: 24,
 	p: 4,
@@ -40,10 +40,6 @@ const UpdateProductModal = ({ handleClose, open, refetch, product }) => {
 		setTags([...tags, tag]);
 	};
 
-	const handleTagClick = index => {
-		console.log('The tag at index ' + index + ' was clicked');
-	};
-	console.log(tags);
 	const handleProductUpdate = async e => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
@@ -76,7 +72,6 @@ const UpdateProductModal = ({ handleClose, open, refetch, product }) => {
 	};
 
 	return (
-		// <></>
 		<Modal
 			open={open}
 			onClose={handleClose}
@@ -143,7 +138,6 @@ const UpdateProductModal = ({ handleClose, open, refetch, product }) => {
 								handleDelete={handleDelete}
 								allowDragDrop={false}
 								handleAddition={handleAddition}
-								handleTagClick={handleTagClick}
 								inputFieldPosition="bottom"
 								placeholder="Enter tags for your Product"
 							/>

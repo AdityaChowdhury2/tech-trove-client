@@ -36,7 +36,7 @@ const Featured = () => {
 				paddingBottom: 5,
 			}}
 		>
-			<Container maxWidth={'lg'} sx={{ padding: '0px' }}>
+			<Container maxWidth={'lg'} sx={{ paddingX: 2 }}>
 				<SectionHeader
 					title={'Featured Products'}
 					subTitle={

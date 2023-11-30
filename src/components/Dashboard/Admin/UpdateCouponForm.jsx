@@ -17,7 +17,7 @@ const UpdateCouponForm = ({ selectedCoupon, mutateCoupon }) => {
 		const expiryDate = date;
 		const description = e.target.description.value;
 		const discount_amount = e.target.discount_amount.value;
-		console.log({ code, expiryDate, description, discount_amount });
+
 		const formData = { code, expiryDate, description, discount_amount };
 		const addCouponPromise = mutateCoupon(formData);
 		toast.promise(

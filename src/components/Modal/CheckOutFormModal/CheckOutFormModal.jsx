@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PaymentIcon from '@mui/icons-material/Payment';
+import { useTheme } from '@mui/material';
 
 const style = {
 	position: 'absolute',
@@ -22,7 +23,7 @@ const style = {
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
 	width: 400,
-	bgcolor: 'primary.50',
+	bgcolor: 'white.main',
 	border: 'none',
 	boxShadow: 24,
 	p: 4,
@@ -30,6 +31,7 @@ const style = {
 
 const CheckOutFormModal = ({ handleClose, open }) => {
 	const axiosSecure = useAxiosSecure();
+	const theme = useTheme();
 	const stripe = useStripe();
 	const elements = useElements();
 	const [cardError, setCardError] = useState();
@@ -47,9 +49,8 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 		const code = e.target.coupon?.value;
 		if (code) {
 			const response = await axiosSecure(`/api/v1/coupons/${code}`);
-			console.log(response.data);
+
 			if (response.data?.valid) {
-				console.log(response.data.amount);
 				setPrice(100 - response.data.amount);
 			} else {
 				setCouponMessage(response.data.message);
@@ -77,7 +78,7 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 				setClientSecret(response.data.clientSecret);
 			});
 	}, [price]);
-	console.log(clientSecret);
+	// console.log(clientSecret);
 	const handleSubmit = async event => {
 		event.preventDefault();
 		const toastId = toast.loading('Processing payment...');
@@ -96,7 +97,7 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 			setCardError(error.message);
 		} else {
 			setCardError('');
-			console.log('payment method', paymentMethod);
+			// console.log('payment method', paymentMethod);
 		}
 		setProcessing(true);
 		const { paymentIntent, error: confirmError } =
@@ -117,7 +118,7 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 			setProcessing(false);
 		}
 
-		console.log('payment intent', paymentIntent);
+		// console.log('payment intent', paymentIntent);
 		if (paymentIntent.status == 'succeeded') {
 			const paymentInfo = {
 				email: user?.email,
@@ -125,17 +126,12 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 				date: new Date(),
 			};
 			try {
-				// TODO: save payment info to the database
-				const response = axiosSecure.post('/api/v1/payment', paymentInfo);
-				console.log(response.data);
-				// TODO: update user info subscribed true
+				axiosSecure.post('/api/v1/payment', paymentInfo);
+
 				updateUserInfo({ subscribed: true });
 
-				// TODO: toast
 				toast.success('Payment Successful', { id: toastId });
 				handleClose();
-
-				// TODO: navigate to my profile
 			} catch (err) {
 				console.log(err.message);
 				toast.error(err.message, { id: toastId });
@@ -236,7 +232,6 @@ const CheckOutFormModal = ({ handleClose, open }) => {
 							startIcon={<PaymentIcon />}
 							loadingPosition="start"
 							variant="contained"
-							color="success"
 							type="submit"
 						>
 							Pay ${price}

@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Container } from '@mui/material';
+import { Container, useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,6 +14,7 @@ import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet-async';
 
 const Login = () => {
+	const theme = useTheme();
 	const { login } = useAuth();
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -82,19 +83,22 @@ const Login = () => {
 						type="submit"
 						fullWidth
 						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
+						sx={{ mt: 3, mb: 2, color: theme.palette.white.main }}
 					>
 						Sign In
 					</Button>
 					<Grid container>
 						<Grid item>
 							<Typography variant="body2">
-								Don&apos;t have an account?{' '}
+								Don&apos;t have an account?
 								<Link
 									to={'/register'}
-									style={{ textDecoration: 'none', color: 'darkcyan' }}
+									style={{
+										textDecoration: 'none',
+										color: theme.palette.primary.main,
+									}}
 								>
-									<span style={{ fontWeight: 600 }}> Sign Up</span>
+									<span style={{ fontWeight: 600 }}>Sign Up</span>
 								</Link>
 							</Typography>
 						</Grid>
@@ -110,7 +114,10 @@ const Login = () => {
 				sx={{ mt: 5 }}
 			>
 				{'Copyright © '}
-				<Link to={'/'} style={{ textDecoration: 'none', color: 'darkcyan' }}>
+				<Link
+					to={'/'}
+					style={{ textDecoration: 'none', color: theme.palette.primary.main }}
+				>
 					<span style={{ fontWeight: 600 }}>TechTrove </span>
 				</Link>
 				{new Date().getFullYear()}

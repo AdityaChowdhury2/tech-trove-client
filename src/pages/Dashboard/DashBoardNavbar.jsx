@@ -10,7 +10,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAppStore } from '../../store/AppStore';
 import { Avatar, Tooltip } from '@mui/material';
-import { NavLink } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const AppBar = styled(MuiAppBar, {

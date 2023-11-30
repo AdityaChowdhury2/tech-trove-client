@@ -15,6 +15,8 @@ const useAxiosSecure = () => {
 	useEffect(() => {
 		// const requestInterceptor = axiosSecure.interceptors.request.use(
 		// 	function (config) {
+		// 		// console.log(config.url);
+		// 		console.log(config);
 		// 		// Do something before request is sent
 		// 		return config;
 		// 	},
@@ -46,11 +48,14 @@ const useAxiosSecure = () => {
 					navigate('/dashboard');
 					return Promise.reject(error);
 				}
-				// return Promise.reject(error);
+				return Promise.reject(error);
 			}
 		);
-		return () => axiosSecure.interceptors.request.eject(responseInterceptor);
-	}, []);
+		return () => {
+			axiosSecure.interceptors.response.eject(responseInterceptor);
+			// axiosSecure.interceptors.request.eject(requestInterceptor);
+		};
+	}, [logout, navigate]);
 
 	return axiosSecure;
 };

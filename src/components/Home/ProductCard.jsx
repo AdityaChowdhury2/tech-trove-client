@@ -10,7 +10,6 @@ import { BiUpvote } from 'react-icons/bi';
 import { formatDistance } from 'date-fns';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import useUserRole from '../../hooks/useUserRole';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 
@@ -19,14 +18,12 @@ const ProductCard = ({ product, refetch }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const axiosSecure = useAxiosSecure();
-	const { role } = useUserRole();
-	console.log(role);
 
 	const formatDate = date => {
 		return formatDistance(new Date(date), new Date());
 	};
 	const isOwner = user?.email === product.owner.email;
-	console.log('isOwner ', isOwner);
+
 	const {
 		data: upVote,
 		refetch: refetchUpVote,
@@ -84,7 +81,7 @@ const ProductCard = ({ product, refetch }) => {
 						variant={'h3'}
 						component={'h3'}
 						color={'primary.main'}
-						fontSize={{ sm: '24px', lg: '16px' }}
+						fontSize={{ xs: '1.5rem', lg: '16px' }}
 					>
 						<Link
 							to={`/products/${product._id}`}

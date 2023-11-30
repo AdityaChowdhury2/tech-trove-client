@@ -5,8 +5,14 @@ const theme = createTheme({
 		primary: {
 			main: '#36a4d4',
 		},
+		white: {
+			main: '#f5ecec',
+		},
 		warning: {
-			main: '#ffb703',
+			main: '#FFBB5C',
+		},
+		success: {
+			main: '#02A147',
 		},
 	},
 	typography: {

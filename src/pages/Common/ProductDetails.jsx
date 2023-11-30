@@ -11,6 +11,7 @@ import {
 	TextField,
 	TextareaAutosize,
 	Typography,
+	useTheme,
 } from '@mui/material';
 
 import Loading from '../../components/Shared/Loading';
@@ -22,9 +23,10 @@ import toast from 'react-hot-toast';
 import useUserRole from '../../hooks/useUserRole';
 import { Helmet } from 'react-helmet-async';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import useGetProductDetails from '../../hooks/useGetProductDetails';
 
 const ProductDetails = () => {
-	// TODO: add functionality for Report and upvote buttons
+	const theme = useTheme();
 	const axiosSecure = useAxiosSecure();
 	const { user, loading } = useAuth();
 	const initialForm = {
@@ -33,23 +35,36 @@ const ProductDetails = () => {
 	};
 	const [formData, setFormData] = useState(initialForm);
 	const { productId } = useParams();
-	const { data: product = {}, isLoading } = useQuery({
-		queryKey: ['productDetails'],
-		queryFn: async () => {
-			const { data } = await axiosSecure(`/api/v1/products/${productId}`);
-			return data;
-		},
-	});
+
+	const {
+		product,
+		isLoading,
+		refetch: refetchProduct,
+	} = useGetProductDetails();
 	const { data: reviews = [], refetch } = useQuery({
 		queryKey: ['reviews'],
+		// enabled: false,
+		enabled: !!user && !loading && !!productId,
 		queryFn: async () => {
 			const { data } = await axiosSecure(`/api/v1/reviews/${productId}`);
 			return data;
 		},
 	});
 
+	const { data: upVote, refetch: refetchUpVote } = useQuery({
+		queryKey: ['upVote', productId],
+		enabled: !!user && !loading && !!productId,
+		// enabled: false,
+		queryFn: async () => {
+			const response = await axiosSecure(
+				`/api/v1/votes?productId=${productId}`
+			);
+			return response.data;
+		},
+	});
 	const { data: report = [], refetch: refetchReport } = useQuery({
 		queryKey: ['reports'],
+		enabled: !!user && !loading && !!productId,
 		queryFn: async () => {
 			const { data } = await axiosSecure(
 				`/api/v1/reports?productId=${productId}&reportBy=${user.email}`
@@ -65,12 +80,12 @@ const ProductDetails = () => {
 		const toastId = toast.loading('Submitting your Review ...');
 		const userName = e.target.userName.value;
 		const userImgURL = e.target.photoURL.value;
-		console.log({
-			...formData,
-			userName,
-			userImgURL,
-			productId,
-		});
+		// console.log({
+		// 	...formData,
+		// 	userName,
+		// 	userImgURL,
+		// 	productId,
+		// });
 
 		try {
 			await axiosSecure.post(`/api/v1/reviews`, {
@@ -105,16 +120,6 @@ const ProductDetails = () => {
 	};
 	const { role } = useUserRole();
 
-	const { data: upVote, refetch: refetchUpVote } = useQuery({
-		queryKey: ['upVote', product._id],
-		enabled: !!user && !loading,
-		queryFn: async () => {
-			const response = await axiosSecure(
-				`/api/v1/votes?productId=${product._id}`
-			);
-			return response.data;
-		},
-	});
 	// owner can not post owner can not report
 	const handleUpVote = async () => {
 		const upVoteData = {
@@ -129,6 +134,7 @@ const ProductDetails = () => {
 				})
 				.then(() => {
 					refetchUpVote();
+					refetchProduct();
 				});
 		}
 	};
@@ -211,6 +217,9 @@ const ProductDetails = () => {
 									disabled={!!upVote}
 									onClick={handleUpVote}
 									variant="contained"
+									sx={{
+										color: theme.palette.white.main,
+									}}
 									startIcon={<BiUpvote size={12} />}
 								>
 									Upvote ({product.upvote_count})

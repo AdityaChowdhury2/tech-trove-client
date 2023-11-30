@@ -8,14 +8,16 @@ import {
 	Stack,
 	Button,
 	Typography,
+	useTheme,
 } from '@mui/material';
+import { FaXTwitter } from 'react-icons/fa6';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
 const Footer = () => {
+	const theme = useTheme();
 	return (
 		<Box
 			component={'footer'}
@@ -46,12 +48,19 @@ const Footer = () => {
 							<Typography variant="body1" letterSpacing={0.1}>
 								Chittagong, Bangladesh
 							</Typography>
-							<TextField
-								size="small"
-								sx={{ mt: 2 }}
-								placeholder="Enter mail here"
-							/>
-							<Button></Button>
+							<Stack direction={'row'} mt={2}>
+								<TextField size="small" placeholder="Enter mail here" />
+								<Button
+									size={'small'}
+									sx={{
+										borderRadius: '0px 5px 5px 0',
+										color: theme.palette.white.main,
+									}}
+									variant="contained"
+								>
+									Subscribe
+								</Button>
+							</Stack>
 						</Stack>
 					</Grid>
 					<Grid item xs={12} md={6}>
@@ -143,9 +152,9 @@ const Footer = () => {
 									</ListItem>
 									<ListItem>
 										<ListItemIcon sx={{ mr: -3 }}>
-											<TwitterIcon />
+											<FaXTwitter size={20} />
 										</ListItemIcon>
-										<Typography variant="body2">Tiwtter</Typography>
+										<Typography variant="body2">Twitter</Typography>
 									</ListItem>
 									<ListItem>
 										<ListItemIcon sx={{ mr: -3 }}>

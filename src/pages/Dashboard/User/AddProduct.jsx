@@ -44,9 +44,6 @@ const AddProduct = () => {
 		setTags([...tags, tag]);
 	};
 
-	const handleTagClick = index => {
-		console.log('The tag at index ' + index + ' was clicked');
-	};
 	const [loading, setLoading] = useState();
 	const { mutateAsync: addProduct } = useMutation({
 		mutationFn: async product => {
@@ -214,7 +211,6 @@ const AddProduct = () => {
 									delimiters={delimiters}
 									handleDelete={handleDelete}
 									handleAddition={handleAddition}
-									handleTagClick={handleTagClick}
 									inputFieldPosition="bottom"
 									placeholder="Enter tags for your Product"
 								/>

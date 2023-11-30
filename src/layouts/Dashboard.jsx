@@ -71,7 +71,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
 	const open = useAppStore(state => state.dopen);
 	const { role, isLoading } = useUserRole();
-	console.log(isLoading);
+
 	return (
 		<div>
 			<DashboardNavbar />

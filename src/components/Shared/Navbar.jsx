@@ -37,7 +37,7 @@ const Navbar = () => {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
-	console.log(pathname);
+
 	return (
 		<Container sx={{ paddingX: { xs: 1 } }}>
 			<AppBar

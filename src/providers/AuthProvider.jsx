@@ -29,16 +29,16 @@ const AuthProvider = ({ children }) => {
 			if (loggedUser) {
 				axiosPublic
 					.post('/api/v1/create-token', { email: loggedUser })
-					.then(res => {
+					.then(() => {
 						setUser(currentUser);
 						setLoading(false);
-						console.log(res.data);
+						// console.log(res.data);
 					});
 			} else {
 				axiosPublic
 					.post('/api/v1/delete-token')
-					.then(res => {
-						console.log(res.data);
+					.then(() => {
+						// console.log(res.data);
 						setLoading(false);
 						setUser(currentUser);
 					})

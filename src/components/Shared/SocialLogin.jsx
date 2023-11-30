@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import useUpdateUser from '../../hooks/useUpdateUser';
 
 const SocialLogin = () => {
+	const theme = useTheme();
 	const { googleSignIn } = useAuth();
 	const { mutate: updateUserInDB } = useUpdateUser();
 	const navigate = useNavigate();
@@ -37,7 +38,7 @@ const SocialLogin = () => {
 				type="button"
 				fullWidth
 				variant="contained"
-				sx={{ mt: 3, mb: 2 }}
+				sx={{ mt: 3, mb: 2, color: theme.palette.white.main }}
 				startIcon={<GoogleIcon />}
 			>
 				Google

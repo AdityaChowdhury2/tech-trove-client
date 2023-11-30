@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container, useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,10 +18,12 @@ const Register = () => {
 	const { createUser, updateUser } = useAuth();
 	const { mutate: updateUserInDB } = useUpdateUser();
 	const location = useLocation();
+	const theme = useTheme();
 	const navigate = useNavigate();
 
 	const handleSubmit = async event => {
 		event.preventDefault();
+
 		const toastId = toast.loading('Please wait...');
 		const data = new FormData(event.currentTarget);
 		const userData = {
@@ -32,17 +34,11 @@ const Register = () => {
 		};
 		console.log(userData);
 		try {
-			const createUserResponse = await createUser(
-				userData.email,
-				userData.password
-			);
-			console.log(createUserResponse);
+			await createUser(userData.email, userData.password);
+			// console.log(createUserResponse);
 			// update user photoURL and
-			const updateUserResponse = await updateUser(
-				userData.name,
-				userData.photoURL
-			);
-			console.log(updateUserResponse);
+			await updateUser(userData.name, userData.photoURL);
+			// console.log(updateUserResponse);
 			// insert user into the database
 			updateUserInDB({
 				name: userData.name,
@@ -140,7 +136,7 @@ const Register = () => {
 						type="submit"
 						fullWidth
 						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
+						sx={{ mt: 3, mb: 2, color: theme.palette.white.main }}
 					>
 						Sign Up
 					</Button>
@@ -151,11 +147,10 @@ const Register = () => {
 								to={'/login'}
 								style={{
 									textDecoration: 'none',
-									color: 'darkcyan',
 									fontWeight: 600,
+									color: theme.palette.primary.main,
 								}}
 							>
-								{' '}
 								Sign in
 							</Link>
 						</Grid>
@@ -171,7 +166,10 @@ const Register = () => {
 				sx={{ mt: 5 }}
 			>
 				{'Copyright © '}
-				<Link to={'/'} style={{ textDecoration: 'none', color: 'darkcyan' }}>
+				<Link
+					to={'/'}
+					style={{ textDecoration: 'none', color: theme.palette.primary.main }}
+				>
 					<span style={{ fontWeight: 600 }}>TechTrove </span>
 				</Link>
 				{new Date().getFullYear()}
