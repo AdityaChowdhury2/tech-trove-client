@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import Banner from '../../components/Home/Banner';
 import Coupons from '../../components/Home/Coupons';
 import Featured from '../../components/Home/Featured';
-import Footer from '../../components/Home/Footer';
+import Footer from '../../components/Shared/Footer';
 import Trending from '../../components/Home/Trending';
 
 const Home = () => {
@@ -15,7 +15,6 @@ const Home = () => {
 			<Featured />
 			<Trending />
 			<Coupons />
-			<Footer />
 		</>
 	);
 };

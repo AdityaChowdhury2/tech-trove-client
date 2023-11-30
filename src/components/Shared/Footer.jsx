@@ -23,7 +23,7 @@ const Footer = () => {
 			component={'footer'}
 			bgcolor={'#f1fbff'}
 			color="#143347"
-			sx={{ paddingX: 2, paddingY: 5 }}
+			sx={{ paddingX: 2, paddingY: 5, mt: 4 }}
 		>
 			<Container>
 				<Grid container justifyContent={'space-between'} spacing={4}>
