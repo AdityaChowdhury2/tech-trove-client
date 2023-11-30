@@ -17,7 +17,9 @@
 - User can upvote, report and post a review after sign up.
 - There are three roles- guest, moderator, and admin
 - Based on this roles they can do different activity.
-  User:
+
+### User:
+
 - Can add new product.
 - Can edit and update the product details or delete the added product.
 - after moderator approval it wil be shown in main home page.
@@ -25,14 +27,14 @@
 - Subscription fee is 100 dollar but there is some valid (expired coupon will not work) coupon in home page he can use those coupon to reduce the price.
 - After successfull payment user can Add more products.
 
-Moderator:
+### Moderator:
 
 - Users added product will be listed as pending product which can be finall by moderator.
 - Moderator can change the staus of a listed product.
 - Moderator can add a product as fetured product which will be shown in home page.
 - Moderator can delete the reported product
 
-Admin:
+### Admin:
 
 - Admin can change user roles
 - Admin can add Coupon for subscription

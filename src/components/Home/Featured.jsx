@@ -62,12 +62,12 @@ const Featured = () => {
 					<Grid container spacing={3} sx={{ marginTop: 5 }}>
 						{featuredProducts &&
 							featuredProducts.map(featuredProduct => (
-								<Grid key={featuredProduct._id} item xs={12} md={6} xl={3}>
-									<ProductCard
-										product={featuredProduct}
-										refetch={refetchFeaturedProducts}
-									/>
-								</Grid>
+								<ProductCard
+									key={featuredProduct._id}
+									product={featuredProduct}
+									refetch={refetchFeaturedProducts}
+									isTrending={false}
+								/>
 							))}
 					</Grid>
 				)}

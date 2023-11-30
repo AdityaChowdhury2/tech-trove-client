@@ -12,8 +12,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import { Grid } from '@mui/material';
 
-const ProductCard = ({ product, refetch }) => {
+const ProductCard = ({ product, refetch, isTrending }) => {
 	const { user, loading } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -65,108 +66,115 @@ const ProductCard = ({ product, refetch }) => {
 	};
 
 	return (
-		<Card
-			sx={{
-				paddingY: 2,
-				borderRadius: '20px',
-				background: 'linear-gradient(145deg, #e6e6e6, #ffffff)',
-				boxShadow: ' 2px 2px 4px #d9d9d9,  2px 0px 4px #ffffff',
-			}}
-		>
-			<CardHeader
-				sx={{ paddingX: 3 }}
-				disableTypography
-				title={
-					<Typography
-						variant={'h3'}
-						component={'h3'}
-						color={'primary.main'}
-						fontSize={{ xs: '1.5rem', lg: '16px' }}
-					>
-						<Link
-							to={`/products/${product._id}`}
-							style={{ textDecoration: 'none', color: 'inherit' }}
-						>
-							{product.name}
-						</Link>
-					</Typography>
-				}
-				action={
-					location.pathname === '/' ? (
-						<></>
-					) : product.featured ? (
-						<Typography
-							variant={'body1'}
-							component={'p'}
-							color={'primary.main'}
-							fontSize={{ sm: '14px' }}
-							mt={2}
-						>
-							Featured
-						</Typography>
-					) : (
-						<></>
-					)
-				}
-				subheader={
-					<Typography variant="body1" component={'p'} fontSize={{ sm: '12px' }}>
-						{(product?.timestamp &&
-							formatDate(product?.timestamp).replace('about', '')) ||
-							0}{' '}
-						ago
-					</Typography>
-				}
-			/>
-			<CardMedia
-				component="img"
-				height="194"
-				image={product.image}
-				alt="Paella dish"
-			/>
-			<div
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'space-between',
+		<Grid item xs={12} md={6} xl={isTrending ? 4 : 3}>
+			<Card
+				sx={{
+					paddingY: 2,
+					borderRadius: '20px',
+					background: 'linear-gradient(145deg, #e6e6e6, #ffffff)',
+					boxShadow: ' 2px 2px 4px #d9d9d9,  2px 0px 4px #ffffff',
 				}}
 			>
-				<CardContent sx={{ paddingX: 3 }}>
-					<Typography variant="body2" color="text.secondary">
-						{product.tags.map(tag => (
-							<span key={tag.id}>#{tag.text} </span>
-						))}
-					</Typography>
-				</CardContent>
-				<CardActions sx={{ gap: 1, paddingX: 3 }}>
-					<IconButton
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							gap: 1,
-							backgroundColor: '#f3f4f6',
-							borderRadius: '5px',
-							transition: 'ease-in-out',
-							transitionDuration: '200ms',
-							'&:hover': {
-								backgroundColor: '#e5e7eb',
-							},
-						}}
-						aria-label="upvote"
-						disabled={isOwner || !!upVote || isLoading}
-						onClick={handleUpVote}
-					>
-						<BiUpvote size={16} />
-						<Typography fontSize={14}>{product.upvote_count}</Typography>
-					</IconButton>
-				</CardActions>
-			</div>
-		</Card>
+				<CardHeader
+					sx={{ paddingX: 3 }}
+					disableTypography
+					title={
+						<Typography
+							variant={'h3'}
+							component={'h3'}
+							color={'primary.main'}
+							fontSize={{ xs: '1.5rem', lg: '16px' }}
+						>
+							<Link
+								to={`/products/${product._id}`}
+								style={{ textDecoration: 'none', color: 'inherit' }}
+							>
+								{product.name}
+							</Link>
+						</Typography>
+					}
+					action={
+						location.pathname === '/' ? (
+							<></>
+						) : product.featured ? (
+							<Typography
+								variant={'body1'}
+								component={'p'}
+								color={'primary.main'}
+								fontSize={{ sm: '14px' }}
+								mt={2}
+							>
+								Featured
+							</Typography>
+						) : (
+							<></>
+						)
+					}
+					subheader={
+						<Typography
+							variant="body1"
+							component={'p'}
+							fontSize={{ sm: '12px' }}
+						>
+							{(product?.timestamp &&
+								formatDate(product?.timestamp).replace('about', '')) ||
+								0}{' '}
+							ago
+						</Typography>
+					}
+				/>
+				<CardMedia
+					component="img"
+					height="194"
+					image={product.image}
+					alt="Paella dish"
+				/>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'space-between',
+					}}
+				>
+					<CardContent sx={{ paddingX: 3 }}>
+						<Typography variant="body2" color="text.secondary">
+							{product.tags.map(tag => (
+								<span key={tag.id}>#{tag.text} </span>
+							))}
+						</Typography>
+					</CardContent>
+					<CardActions sx={{ gap: 1, paddingX: 3 }}>
+						<IconButton
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								gap: 1,
+								backgroundColor: '#f3f4f6',
+								borderRadius: '5px',
+								transition: 'ease-in-out',
+								transitionDuration: '200ms',
+								'&:hover': {
+									backgroundColor: '#e5e7eb',
+								},
+							}}
+							aria-label="upvote"
+							disabled={isOwner || !!upVote || isLoading}
+							onClick={handleUpVote}
+						>
+							<BiUpvote size={16} />
+							<Typography fontSize={14}>{product.upvote_count}</Typography>
+						</IconButton>
+					</CardActions>
+				</div>
+			</Card>
+		</Grid>
 	);
 };
 
 ProductCard.propTypes = {
 	product: PropTypes.object,
 	refetch: PropTypes.func,
+	isTrending: PropTypes.bool,
 };
 
 export default ProductCard;

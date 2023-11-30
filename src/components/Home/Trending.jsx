@@ -50,9 +50,12 @@ const Trending = () => {
 					<Grid container spacing={4}>
 						{products &&
 							products.map(product => (
-								<Grid key={product._id} item xs={12} md={6} lg={4}>
-									<ProductCard product={product} refetch={refetchTrending} />
-								</Grid>
+								<ProductCard
+									key={product._id}
+									product={product}
+									refetch={refetchTrending}
+									isTrending={true}
+								/>
 							))}
 					</Grid>
 					<Stack alignItems={'center'}>

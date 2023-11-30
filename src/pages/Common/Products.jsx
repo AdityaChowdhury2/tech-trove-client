@@ -107,9 +107,12 @@ const Products = () => {
 				<Grid container spacing={3} sx={{ marginTop: 5 }}>
 					{products &&
 						products.map(product => (
-							<Grid key={product._id} item xs={12} md={6} xl={3}>
-								<ProductCard product={product} refetch={refetchAllProducts} />
-							</Grid>
+							<ProductCard
+								key={product._id}
+								product={product}
+								refetch={refetchAllProducts}
+								isTrending={false}
+							/>
 						))}
 				</Grid>
 				{isLoading && (

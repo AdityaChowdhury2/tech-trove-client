@@ -76,14 +76,6 @@ const Routes = createBrowserRouter([
 					</GuestRoute>
 				),
 			},
-			// {
-			// 	path: 'update-product/:productId',
-			// 	element: (
-			// 		<GuestRoute>
-			// 			<UpdateProduct />
-			// 		</GuestRoute>
-			// 	),
-			// },
 			{
 				path: 'my-products',
 				element: (
