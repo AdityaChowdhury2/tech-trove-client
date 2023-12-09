@@ -2,43 +2,41 @@
 
 ## Special Features
 
-- React Scroll to scroll smoothly in home page.
-- React Copy to clipboard to copy the coupon code
-- Materiul Ui componnent Library.
-- Zustand- a small state management package.
-- Verifying user from backend using JWT.
-- Tanstack query to handle api calls. (useQuery, useMutation)
+- 🔄 **React Scroll:** Smooth scrolling on the home page for an enhanced user experience.
+- 📋 **React Copy to Clipboard:** Convenient coupon code copying functionality.
+- 📘 **Material-UI Component Library:** Utilizing Material-UI for stylish and responsive components.
+- 🔄 **Zustand State Management:** Efficient state management with Zustand.
+- 🔐 **JWT User Verification:** Backend verification of users using JSON Web Tokens.
+- 📡 **Tanstack Query:** Seamless API calls handled with Tanstack Query's useQuery and useMutation.
 
 ## Features
 
-- Responsive design
-- User's login and registration is handled by firebase
-- In this website an user can see the latest technology which are added by other users.
-- User can upvote, report and post a review after sign up.
-- There are three roles- guest, moderator, and admin
-- Based on this roles they can do different activity.
+- 📱 **Responsive Design:** Ensuring a consistent and optimal experience across various devices.
+- 🔐 **Firebase Authentication:** Streamlined user login and registration processes.
+- 👀 **Explore Latest Technology:** Users can discover and explore the latest technology added by others.
+- 👍 **User Engagement:** Upvote, report, and post reviews after signing up.
+- 👤 **User Roles:** Three distinct roles - guest, moderator, and admin - each with specific activities.
 
-### User:
+  **User:**
 
-- Can add new product.
-- Can edit and update the product details or delete the added product.
-- after moderator approval it wil be shown in main home page.
-- Adding limit is 1. User can upgrade the limit by taking Membership Subscription.
-- Subscription fee is 100 dollar but there is some valid (expired coupon will not work) coupon in home page he can use those coupon to reduce the price.
-- After successfull payment user can Add more products.
+  - ➕ Add new products.
+  - ✏ Edit, update, or delete added products.
+  - 🚀 Products go live on the main home page after moderator approval.
+  - 🔄 Membership Subscription: Users can upgrade their limit by taking a subscription with a $100 fee. Valid coupons on the home page can be used to reduce the price.
+  - 🌐 After successful payment, users can add more products.
 
-### Moderator:
+  **Moderator:**
 
-- Users added product will be listed as pending product which can be finall by moderator.
-- Moderator can change the staus of a listed product.
-- Moderator can add a product as fetured product which will be shown in home page.
-- Moderator can delete the reported product
+  - 📝 Pending Products: Products added by users are listed as pending for moderation.
+  - 🔄 Change Product Status: Moderators can change the status of listed products.
+  - ⭐ Featured Products: Moderators can mark products as featured for display on the home page.
+  - 🗑️ Delete Reported Products: Moderators can remove reported products.
 
-### Admin:
+  **Admin:**
 
-- Admin can change user roles
-- Admin can add Coupon for subscription
-- He can see a pie chart which show the total users, total products and total reviews
+  - 🔄 Change User Roles: Admins have the authority to change user roles.
+  - 📋 Add Subscription Coupons: Admins can add coupons for subscription discounts.
+  - 📊 **Dashboard Insights:** Admins can view a pie chart illustrating total users, products, and reviews. Data visualization powered by [ApexCharts](https://apexcharts.com/).
 
 ## 🔗 Links
 
