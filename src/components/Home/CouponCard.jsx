@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { Box, Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack, useTheme } from '@mui/material';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { format } from 'date-fns';
 
 const CouponCard = ({ coupon }) => {
 	const [copied, setCopied] = useState(false);
+	const theme = useTheme();
 	const couponRef = useRef(coupon.code);
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -85,7 +86,7 @@ const CouponCard = ({ coupon }) => {
 					<Box
 						component={'div'}
 						sx={{
-							background: 'white',
+							background: theme.palette.background.main,
 							width: '70px',
 							borderRadius: '50%',
 							position: 'absolute',
@@ -97,7 +98,7 @@ const CouponCard = ({ coupon }) => {
 					<Box
 						component={'div'}
 						sx={{
-							background: 'white',
+							background: theme.palette.background.main,
 							width: '70px',
 							borderRadius: '50%',
 							position: 'absolute',
