@@ -22,7 +22,8 @@ const CouponCard = ({ coupon }) => {
 			<div
 				style={{
 					minWidth: 275,
-					background: `linear-gradient(45deg, #C5FFF8 0%, #5FBDFF 100%)`,
+					// background: `linear-gradient(11deg, rgba(239,255,254,1) 0%, rgba(115,217,251,1) 52%, rgba(54,164,212,1) 100%)`,
+					background: `linear-gradient(180deg, rgba(239,255,254,1) 0%, rgba(115,217,251,1) 52%, rgba(54,164,212,1) 100%)`,
 					color: '#143347',
 					overflow: 'hidden',
 					borderRadius: '15px',

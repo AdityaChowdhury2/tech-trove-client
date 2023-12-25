@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import ReactApexChart from 'react-apexcharts';
 import { Box, Typography } from '@mui/material';
+// import { useEffect, useState } from 'react';
+// import socketIOClient from 'socket.io-client';
 
 const PieChart = () => {
 	const axiosSecure = useAxiosSecure();
@@ -12,6 +14,15 @@ const PieChart = () => {
 			return data;
 		},
 	});
+
+	// const [statsData, setStatsData] = useState({});
+
+	// useEffect(() => {
+	// 	const socket = socketIOClient('http://localhost:5000/api/v1/pie-stats');
+	// 	socket.on('connection', data => {
+	// 		setStatsData(data);
+	// 	});
+	// }, []);
 
 	const series = statsData?.series;
 	const options = {

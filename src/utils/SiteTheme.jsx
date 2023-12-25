@@ -4,6 +4,7 @@ const theme = createTheme({
 	palette: {
 		primary: {
 			main: '#36a4d4',
+			subMain: '#73d9fb',
 		},
 		white: {
 			main: '#f5ecec',
@@ -15,7 +16,7 @@ const theme = createTheme({
 			main: '#02A147',
 		},
 		background: {
-			main: '#e1f3ff',
+			main: '#effffe',
 		},
 	},
 	typography: {

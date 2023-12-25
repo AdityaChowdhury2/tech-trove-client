@@ -32,7 +32,7 @@ const Login = () => {
 			toast.success('Welcome👋👋', { id: toastId });
 			navigate(location.state?.from || '/', { replace: true });
 		} catch (error) {
-			console.log('Inloginpage', error.message);
+			console.log('In login page', error.message);
 			toast.error(error.message, { id: toastId });
 		}
 	};
