@@ -1,28 +1,47 @@
-import { useQuery } from '@tanstack/react-query';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
+// import { useQuery } from '@tanstack/react-query';
+// import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import ReactApexChart from 'react-apexcharts';
 import { Box, Typography } from '@mui/material';
-// import { useEffect, useState } from 'react';
-// import socketIOClient from 'socket.io-client';
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+const socket = io.connect(import.meta.env.VITE_SERVER_URL);
+import toast from 'react-hot-toast';
 
 const PieChart = () => {
-	const axiosSecure = useAxiosSecure();
-	const { data: statsData } = useQuery({
-		queryKey: ['pieChart'],
-		queryFn: async () => {
-			const { data } = await axiosSecure('/api/v1/pie-stats');
-			return data;
-		},
-	});
+	// const axiosSecure = useAxiosSecure();
+	// const { data: pieData } = useQuery({
+	// 	queryKey: ['pieChart'],
+	// 	queryFn: async () => {
+	// 		const { data } = await axiosSecure('/api/v1/pie-stats');
+	// 		return data;
+	// 	},
+	// });
 
-	// const [statsData, setStatsData] = useState({});
+	const [statsData, setStatsData] = useState();
 
-	// useEffect(() => {
-	// 	const socket = socketIOClient('http://localhost:5000/api/v1/pie-stats');
-	// 	socket.on('connection', data => {
-	// 		setStatsData(data);
-	// 	});
-	// }, []);
+	useEffect(() => {
+		socket.connect();
+		// console.log('hello');
+		socket.emit('send-pie-chart', { message: '' });
+		socket.emit('join_room', 2);
+		socket.on('receive-pie-chart', data => {
+			setStatsData(data.finalResult);
+			// console.log(data, 'finalResult');
+
+			if (data.data.message) {
+				toast.success(data.data.message);
+			}
+			// console.log(data, ' data');
+		});
+		return () => {
+			if (socket.readyState === 1) {
+				socket.disconnect();
+			}
+		};
+	}, [socket]);
+
+	console.log(statsData, ' ws data');
+	// console.log(pieData, ' piedata');
 
 	const series = statsData?.series;
 	const options = {

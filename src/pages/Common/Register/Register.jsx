@@ -13,6 +13,10 @@ import useAuth from '../../../hooks/useAuth';
 import useUpdateUser from '../../../hooks/useUpdateUser';
 import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet-async';
+import io from 'socket.io-client';
+const socket = io.connect(import.meta.env.VITE_SERVER_URL, {
+	withCredentials: true,
+});
 
 const Register = () => {
 	const { createUser, updateUser } = useAuth();
@@ -45,6 +49,7 @@ const Register = () => {
 				email: userData.email,
 				photoURL: userData.photoURL,
 			});
+			socket.emit('send-pie-chart', { message: 'New User Registered' });
 			toast.success('User Created successfully', { id: toastId });
 			navigate(location.state?.from || '/', { replace: true });
 		} catch (err) {

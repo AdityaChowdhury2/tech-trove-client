@@ -8,7 +8,7 @@ const BarChart = () => {
 		queryKey: ['barChart'],
 		queryFn: async () => {
 			const response = await axiosSecure('/api/v1/bar-chart');
-			console.log(response.data);
+			// console.log(response.data);
 			return response.data;
 		},
 	});
@@ -33,7 +33,7 @@ const BarChart = () => {
 		},
 		xaxis: { categories: statsData?.categories },
 	};
-	console.log(statsData);
+	// console.log(statsData);
 	return (
 		<div>
 			{statsData && (

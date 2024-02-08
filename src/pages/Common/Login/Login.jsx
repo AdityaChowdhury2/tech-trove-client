@@ -19,7 +19,7 @@ const Login = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const handleSubmit = async event => {
+	const handleSubmit = event => {
 		event.preventDefault();
 		const toastId = toast.loading('Signing in...');
 		const data = new FormData(event.currentTarget);
@@ -27,6 +27,10 @@ const Login = () => {
 			email: data.get('email'),
 			password: data.get('password'),
 		};
+		loginUser(loginData, toastId);
+	};
+
+	const loginUser = async (loginData, toastId) => {
 		try {
 			await login(loginData);
 			toast.success('Welcome👋👋', { id: toastId });
@@ -36,8 +40,58 @@ const Login = () => {
 			toast.error(error.message, { id: toastId });
 		}
 	};
+
+	const handleAdminLogin = async () => {
+		const toastId = toast.loading('Admin Signing in...');
+		const loginData = {
+			email: import.meta.env.VITE_ADMIN_USER_EMAIL,
+			password: import.meta.env.VITE_ADMIN_USER_PASSWORD,
+		};
+		await loginUser(loginData, toastId);
+	};
+	const handleModeratorLogin = async () => {
+		const toastId = toast.loading('Moderator Signing in...');
+		const loginData = {
+			email: import.meta.env.VITE_MODERATOR_USER_EMAIL,
+			password: import.meta.env.VITE_MODERATOR_USER_PASSWORD,
+		};
+		await loginUser(loginData, toastId);
+	};
+	const handleGuestLogin = async () => {
+		const toastId = toast.loading('Guest User Signing in...');
+		const loginData = {
+			email: import.meta.env.VITE_GUEST_USER_EMAIL,
+			password: import.meta.env.VITE_GUEST_USER_PASSWORD,
+		};
+		await loginUser(loginData, toastId);
+	};
+
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container
+			component="main"
+			maxWidth="xs"
+			sx={{
+				position: 'relative',
+			}}
+		>
+			{/* <div
+				style={{
+					position: 'absolute',
+					bottom: '-200px',
+					left: '20px',
+					width: '80%',
+					height: '200px',
+					padding: '20px',
+					fontSize: '12px',
+				}}
+			>
+				<p>Email: admin@tech-trove.com</p>
+				<p>Pass: Admin@123</p>
+				<p>Moderator: moderator@tech-trove.com</p>
+				<p>Pass: Moderator@123</p>
+				<p>Guest: ronab31934@kxgif.com</p>
+				<p>Pass: ronab31934@kxgif.com</p>
+			</div> */}
 			<Helmet>
 				<title>TechTrove | Login</title>
 			</Helmet>
@@ -123,6 +177,37 @@ const Login = () => {
 				{new Date().getFullYear()}
 				{'.'}
 			</Typography>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+				}}
+			>
+				<Button
+					type="submit"
+					variant="contained"
+					sx={{ mt: 3, mb: 2, color: theme.palette.white.main }}
+					onClick={handleAdminLogin}
+				>
+					Admin
+				</Button>
+				<Button
+					type="submit"
+					variant="contained"
+					sx={{ mt: 3, mb: 2, color: theme.palette.white.main }}
+					onClick={handleModeratorLogin}
+				>
+					Moderator
+				</Button>
+				<Button
+					type="submit"
+					variant="contained"
+					sx={{ mt: 3, mb: 2, color: theme.palette.white.main }}
+					onClick={handleGuestLogin}
+				>
+					User
+				</Button>
+			</Box>
 		</Container>
 	);
 };

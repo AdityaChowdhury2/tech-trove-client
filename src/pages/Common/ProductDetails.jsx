@@ -24,6 +24,10 @@ import useUserRole from '../../hooks/useUserRole';
 import { Helmet } from 'react-helmet-async';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import useGetProductDetails from '../../hooks/useGetProductDetails';
+import io from 'socket.io-client';
+const socket = io.connect(import.meta.env.VITE_SERVER_URL, {
+	withCredentials: true,
+});
 
 const ProductDetails = () => {
 	const theme = useTheme();
@@ -95,6 +99,7 @@ const ProductDetails = () => {
 				productId,
 			});
 			setFormData(initialForm);
+			socket.emit('send-pie-chart', { message: 'New Review Submitted' });
 			toast.success('Review Submitted 👍👍', { id: toastId });
 			refetch();
 		} catch (error) {
